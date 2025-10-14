@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Filtro Inteligente de Links do Instagram</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 20px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .container {
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 700px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .container:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+  }
+
+  label {
+    font-weight: 500;
+    color: #262626;
+  }
+
+  textarea {
+    width: 100%;
+    height: 140px;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #dbdbdb;
+    background: #fafafa;
+    font-size: 14px;
+    resize: none;
+    transition: all 0.25s ease;
+  }
+
+  textarea:focus {
+    outline: none;
+    background: #fff;
+    border-color: #dd2a7b;
+    box-shadow: 0 0 0 3px rgba(221,42,123,0.15);
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  button {
+    border: none;
+    color: #fff;
+    padding: 12px 26px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  #processar {
+    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
+  }
+  #processar:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+  }
+
+  #copyBtn {
+    background-color: #3897f0;
+  }
+  #copyBtn:hover {
+    background-color: #2d84d6;
+    transform: scale(1.03);
+  }
+
+  #clearBtn {
+    background-color: #ed4956;
+  }
+  #clearBtn:hover {
+    background-color: #d73342;
+    transform: scale(1.03);
+  }
+
+  #output {
+    text-align: center;
+    color: #262626;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+
+  #result {
+    background: #fafafa;
+    border-radius: 12px;
+    border: 1px solid #dbdbdb;
+    padding: 16px;
+    font-size: 14px;
+    max-height: 340px;
+    overflow-y: auto;
+    white-space: normal;
+    word-wrap: break-word;
+  }
+
+  #result a {
+    color: #0095f6;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #result a:hover {
+    color: #dd2a7b;
+  }
+
+  #result ol {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  footer {
+    margin-top: 40px;
+    text-align: center;
+    color: #8e8e8e;
+    font-size: 13px;
+  }
+
+  footer span {
+    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .container, h1, footer {
+    animation: fadeIn 0.6s ease forwards;
+  }
+</style>
+</head>
+<body>
+
+<h1>Filtro Inteligente de Links do Instagram</h1>
+
+<div class="container">
+  <label>📱 Cole aqui a sua lista de seguidores do Instagram:</label>
+  <textarea id="principal" placeholder="Cole aqui a sua lista de seguidores..."></textarea>
+
+  <label>🎯 Cole aqui a lista de seguidores do seu alvo:</label>
+  <textarea id="filtrada" placeholder="Cole aqui a lista de seguidores da página-alvo..."></textarea>
+
+  <div class="buttons">
+    <button id="processar">Filtrar Links</button>
+    <button id="copyBtn">Copiar Resultado</button>
+    <button id="clearBtn">Limpar Tudo</button>
+  </div>
+
+  <p id="output"></p>
+  <div id="result" style="display:none;"></div>
+</div>
+
+<footer>
+  <p>Desenvolvido com ❤️ e inspiração no <span>Instagram</span></p>
+</footer>
+
+<script>
+document.getElementById("processar").addEventListener("click", () => {
+  const principalText = document.getElementById("principal").value.trim();
+  const filtradaText = document.getElementById("filtrada").value.trim();
+  const resultDiv = document.getElementById("result");
+  const output = document.getElementById("output");
+
+  if (!principalText) {
+    alert("Por favor, cole o texto copiado do Instagram.");
+    return;
+  }
+
+  const palavrasIgnoradas = [
+    "curtidas","seguidores","seguindo","pesquisar","meta","sobre","blog","carreiras","ajuda",
+    "api","privacidade","termos","localizações","instagram","lite","threads","upload",
+    "meta verified","posts","foto do perfil","mensagens","notificações","painel",
+    "página inicial","explorar","reels","criar","perfil","mais","também da meta","©",
+    "from meta","português","brasil"
+  ];
+
+  const regexID = /^[a-zA-Z0-9._@]+$/;
+
+  const linhas = principalText
+    .split(/\r?\n/)
+    .map(l => l.trim())
+    .filter(l =>
+      l &&
+      regexID.test(l) &&
+      !palavrasIgnoradas.some(p => l.toLowerCase().includes(p)) &&
+      !/^\d+([.,]\d+)?$/.test(l)
+    );
+
+  const usados = new Set(
+    filtradaText
+      .split(/\r?\n/)
+      .map(l => l.trim().toLowerCase().replace(/^@/, ''))
+      .filter(l => l)
+  );
+
+  const linksUnicos = linhas
+    .map(id => id.toLowerCase().replace(/^@/, ''))
+    .filter(id => !usados.has(id))
+    .map(id => `https://www.instagram.com/${id}/`);
+
+  const resultadoFinal = [...new Set(linksUnicos)];
+
+  if (resultadoFinal.length === 0) {
+    output.textContent = "⚠️ Nenhum link de perfil único encontrado.";
+    resultDiv.style.display = "none";
+  } else {
+    output.textContent = `✅ ${resultadoFinal.length} links únicos encontrados.`;
+    resultDiv.style.display = "block";
+    
+    // Cria lista ordenada com links clicáveis
+    const lista = document.createElement("ol");
+    resultadoFinal.forEach(link => {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = link;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = link;
+      li.appendChild(a);
+      lista.appendChild(li);
+    });
+
+    resultDiv.innerHTML = "";
+    resultDiv.appendChild(lista);
+  }
+});
+
+document.getElementById("copyBtn").addEventListener("click", () => {
+  const resultLinks = document.querySelectorAll("#result a");
+  if (resultLinks.length === 0) return alert("Nada para copiar!");
+  
+  const textToCopy = Array.from(resultLinks).map(a => a.href).join("\n");
+  navigator.clipboard.writeText(textToCopy);
+  alert("✅ Lista copiada para a área de transferência!");
+});
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  document.getElementById("principal").value = "";
+  document.getElementById("filtrada").value = "";
+  document.getElementById("result").style.display = "none";
+  document.getElementById("output").textContent = "";
+});
+</script>
+
+</body>
+</html>
+
