@@ -42,18 +42,13 @@
     transition: box-shadow 0.3s ease;
   }
 
-  .container:hover {
-    box-shadow: 0 6px 18px rgba(0,0,0,0.07);
-  }
+  .container:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.07); }
 
-  label {
-    font-weight: 500;
-    color: #262626;
-  }
+  label { font-weight: 500; color: #262626; }
 
   textarea {
     width: 100%;
-    height: 140px;
+    height: 120px;
     padding: 14px;
     border-radius: 12px;
     border: 1px solid #dbdbdb;
@@ -92,26 +87,13 @@
   #processar {
     background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
   }
-  #processar:hover {
-    opacity: 0.9;
-    transform: scale(1.03);
-  }
+  #processar:hover { opacity: 0.9; transform: scale(1.03); }
 
-  #copyBtn {
-    background-color: #3897f0;
-  }
-  #copyBtn:hover {
-    background-color: #2d84d6;
-    transform: scale(1.03);
-  }
+  #copyBtn { background-color: #3897f0; }
+  #copyBtn:hover { background-color: #2d84d6; transform: scale(1.03); }
 
-  #clearBtn {
-    background-color: #ed4956;
-  }
-  #clearBtn:hover {
-    background-color: #d73342;
-    transform: scale(1.03);
-  }
+  #clearBtn { background-color: #ed4956; }
+  #clearBtn:hover { background-color: #d73342; transform: scale(1.03); }
 
   #output {
     text-align: center;
@@ -138,14 +120,9 @@
     transition: color 0.2s ease;
   }
 
-  #result a:hover {
-    color: #dd2a7b;
-  }
+  #result a:hover { color: #dd2a7b; }
 
-  #result ol {
-    margin: 0;
-    padding-left: 20px;
-  }
+  #result ol { margin: 0; padding-left: 20px; }
 
   footer {
     margin-top: 40px;
@@ -164,12 +141,14 @@
 </head>
 <body>
 
-<h1>🔍 Instagram filter</h1>
-<h4>Descubra quem não te segue da lista de seguidores de um alvo espécifico</h4>
+<h1>🔍 Filtro: Quem segue o alvo mas NÃO te segue</h1>
 
 <div class="container">
   <label>📱 Sua lista de seguidores (quem te segue):</label>
   <textarea id="meusSeguidores" placeholder="Cole aqui os seus seguidores..."></textarea>
+
+  <label>👥 (Opcional) Lista de pessoas que você segue:</label>
+  <textarea id="meusSeguindo" placeholder="Cole aqui quem você segue... (opcional)"></textarea>
 
   <label>🎯 Lista de seguidores do alvo:</label>
   <textarea id="seguidoresAlvo" placeholder="Cole aqui os seguidores do seu alvo..."></textarea>
@@ -191,31 +170,54 @@
 <script>
 document.getElementById("processar").addEventListener("click", () => {
   const meusSeguidoresText = document.getElementById("meusSeguidores").value.trim();
+  const meusSeguindoText = document.getElementById("meusSeguindo").value.trim();
   const seguidoresAlvoText = document.getElementById("seguidoresAlvo").value.trim();
   const resultDiv = document.getElementById("result");
   const output = document.getElementById("output");
 
   if (!meusSeguidoresText || !seguidoresAlvoText) {
-    alert("Por favor, cole as duas listas antes de continuar!");
+    alert("Por favor, cole sua lista de seguidores e a do alvo antes de continuar!");
     return;
   }
+
+  // Lista de palavras proibidas (ignoradas automaticamente)
+  const ignorar = [
+    "sobre","ajuda","imprensa","api","carreiras","privacidade","termos",
+    "localizações","idioma","português (brasil)","meta verified",
+    "© 2025 instagram from meta","página inicial","explorar","reels","9+",
+    "mensagens","notificações","foto do perfil de afroscientist","perfil",
+    "meta ai","threads","mais"
+  ];
 
   const regexID = /^[a-zA-Z0-9._@]+$/;
   const limpar = texto => texto.split(/\r?\n/)
     .map(l => l.trim().toLowerCase().replace(/^@/, ''))
-    .filter(l => l && regexID.test(l));
+    .filter(l =>
+      l &&
+      regexID.test(l) &&
+      !ignorar.some(termo => l.includes(termo))
+    );
 
   const meusSeguidores = new Set(limpar(meusSeguidoresText));
+  const meusSeguindo = meusSeguindoText ? new Set(limpar(meusSeguindoText)) : null;
   const seguidoresAlvo = limpar(seguidoresAlvoText);
 
-  // Mantém apenas os que seguem o alvo mas NÃO te seguem
-  const resultado = seguidoresAlvo.filter(id => !meusSeguidores.has(id));
+  // Filtra quem segue o alvo, mas não te segue
+  let resultado = seguidoresAlvo.filter(id => !meusSeguidores.has(id));
+
+  // Se o usuário informou quem ele segue, filtra também quem ele já segue
+  if (meusSeguindo) {
+    resultado = resultado.filter(id => !meusSeguindo.has(id));
+  }
 
   if (resultado.length === 0) {
-    output.textContent = "⚠️ Nenhum perfil novo encontrado — todos já te seguem.";
+    output.textContent = "⚠️ Nenhum perfil novo encontrado — todos já te seguem ou você já os segue.";
     resultDiv.style.display = "none";
   } else {
-    output.textContent = `✅ ${resultado.length} perfis não te seguem ainda.`;
+    const mensagem = meusSeguindo
+      ? `✅ ${resultado.length} perfis seguem o alvo, não te seguem e você ainda não segue.`
+      : `✅ ${resultado.length} perfis seguem o alvo mas ainda não te seguem.`;
+    output.textContent = mensagem;
     resultDiv.style.display = "block";
 
     const lista = document.createElement("ol");
@@ -244,6 +246,7 @@ document.getElementById("copyBtn").addEventListener("click", () => {
 
 document.getElementById("clearBtn").addEventListener("click", () => {
   document.getElementById("meusSeguidores").value = "";
+  document.getElementById("meusSeguindo").value = "";
   document.getElementById("seguidoresAlvo").value = "";
   document.getElementById("result").style.display = "none";
   document.getElementById("output").textContent = "";
