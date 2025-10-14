@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Filtro Inteligente de Links do Instagram</title>
+<title>Filtro Inteligente de Perfis que NÃO te Seguem</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   body {
@@ -160,30 +160,21 @@
     -webkit-text-fill-color: transparent;
     font-weight: 600;
   }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .container, h1, footer {
-    animation: fadeIn 0.6s ease forwards;
-  }
 </style>
 </head>
 <body>
 
-<h1>Filtro Inteligente de Links do Instagram</h1>
+<h1>🔍 Filtro: Quem segue o alvo mas NÃO te segue</h1>
 
 <div class="container">
-  <label>📱 Cole aqui a sua lista de seguidores do Instagram:</label>
-  <textarea id="principal" placeholder="Cole aqui a sua lista de seguidores..."></textarea>
+  <label>📱 Sua lista de seguidores (quem te segue):</label>
+  <textarea id="meusSeguidores" placeholder="Cole aqui os seus seguidores..."></textarea>
 
-  <label>🎯 Cole aqui a lista de seguidores do seu alvo:</label>
-  <textarea id="filtrada" placeholder="Cole aqui a lista de seguidores da página-alvo..."></textarea>
+  <label>🎯 Lista de seguidores do alvo:</label>
+  <textarea id="seguidoresAlvo" placeholder="Cole aqui os seguidores do seu alvo..."></textarea>
 
   <div class="buttons">
-    <button id="processar">Filtrar Links</button>
+    <button id="processar">Filtrar</button>
     <button id="copyBtn">Copiar Resultado</button>
     <button id="clearBtn">Limpar Tudo</button>
   </div>
@@ -198,66 +189,41 @@
 
 <script>
 document.getElementById("processar").addEventListener("click", () => {
-  const principalText = document.getElementById("principal").value.trim();
-  const filtradaText = document.getElementById("filtrada").value.trim();
+  const meusSeguidoresText = document.getElementById("meusSeguidores").value.trim();
+  const seguidoresAlvoText = document.getElementById("seguidoresAlvo").value.trim();
   const resultDiv = document.getElementById("result");
   const output = document.getElementById("output");
 
-  if (!principalText) {
-    alert("Por favor, cole o texto copiado do Instagram.");
+  if (!meusSeguidoresText || !seguidoresAlvoText) {
+    alert("Por favor, cole as duas listas antes de continuar!");
     return;
   }
 
-  const palavrasIgnoradas = [
-    "curtidas","seguidores","seguindo","pesquisar","meta","sobre","blog","carreiras","ajuda",
-    "api","privacidade","termos","localizações","instagram","lite","threads","upload",
-    "meta verified","posts","foto do perfil","mensagens","notificações","painel",
-    "página inicial","explorar","reels","criar","perfil","mais","também da meta","©",
-    "from meta","português","brasil"
-  ];
-
   const regexID = /^[a-zA-Z0-9._@]+$/;
+  const limpar = texto => texto.split(/\r?\n/)
+    .map(l => l.trim().toLowerCase().replace(/^@/, ''))
+    .filter(l => l && regexID.test(l));
 
-  const linhas = principalText
-    .split(/\r?\n/)
-    .map(l => l.trim())
-    .filter(l =>
-      l &&
-      regexID.test(l) &&
-      !palavrasIgnoradas.some(p => l.toLowerCase().includes(p)) &&
-      !/^\d+([.,]\d+)?$/.test(l)
-    );
+  const meusSeguidores = new Set(limpar(meusSeguidoresText));
+  const seguidoresAlvo = limpar(seguidoresAlvoText);
 
-  const usados = new Set(
-    filtradaText
-      .split(/\r?\n/)
-      .map(l => l.trim().toLowerCase().replace(/^@/, ''))
-      .filter(l => l)
-  );
+  // Mantém apenas os que seguem o alvo mas NÃO te seguem
+  const resultado = seguidoresAlvo.filter(id => !meusSeguidores.has(id));
 
-  const linksUnicos = linhas
-    .map(id => id.toLowerCase().replace(/^@/, ''))
-    .filter(id => !usados.has(id))
-    .map(id => `https://www.instagram.com/${id}/`);
-
-  const resultadoFinal = [...new Set(linksUnicos)];
-
-  if (resultadoFinal.length === 0) {
-    output.textContent = "⚠️ Nenhum link de perfil único encontrado.";
+  if (resultado.length === 0) {
+    output.textContent = "⚠️ Nenhum perfil novo encontrado — todos já te seguem.";
     resultDiv.style.display = "none";
   } else {
-    output.textContent = `✅ ${resultadoFinal.length} links únicos encontrados.`;
+    output.textContent = `✅ ${resultado.length} perfis não te seguem ainda.`;
     resultDiv.style.display = "block";
-    
-    // Cria lista ordenada com links clicáveis
+
     const lista = document.createElement("ol");
-    resultadoFinal.forEach(link => {
+    resultado.forEach(user => {
       const li = document.createElement("li");
       const a = document.createElement("a");
-      a.href = link;
+      a.href = `https://www.instagram.com/${user}/`;
       a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.textContent = link;
+      a.textContent = `@${user}`;
       li.appendChild(a);
       lista.appendChild(li);
     });
@@ -270,15 +236,14 @@ document.getElementById("processar").addEventListener("click", () => {
 document.getElementById("copyBtn").addEventListener("click", () => {
   const resultLinks = document.querySelectorAll("#result a");
   if (resultLinks.length === 0) return alert("Nada para copiar!");
-  
   const textToCopy = Array.from(resultLinks).map(a => a.href).join("\n");
   navigator.clipboard.writeText(textToCopy);
   alert("✅ Lista copiada para a área de transferência!");
 });
 
 document.getElementById("clearBtn").addEventListener("click", () => {
-  document.getElementById("principal").value = "";
-  document.getElementById("filtrada").value = "";
+  document.getElementById("meusSeguidores").value = "";
+  document.getElementById("seguidoresAlvo").value = "";
   document.getElementById("result").style.display = "none";
   document.getElementById("output").textContent = "";
 });
@@ -286,4 +251,3 @@ document.getElementById("clearBtn").addEventListener("click", () => {
 
 </body>
 </html>
-
