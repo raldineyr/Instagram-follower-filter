@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram - Comparador de Seguidores</title>
     <style>
+        /* ... (mantenha todo o CSS igual) ... */
         * {
             margin: 0;
             padding: 0;
@@ -337,7 +338,7 @@
             box-shadow: 0 0 0 1px #40C057, 0 2px 4px rgba(64, 192, 87, 0.3);
         }
 
-        a {
+        a.instagram-link {
             color: #0095f6;
             text-decoration: none;
             font-weight: 600;
@@ -352,25 +353,27 @@
             cursor: pointer;
         }
 
-        a::before {
+        a.instagram-link::before {
             content: '@';
             color: #8e8e8e;
             font-weight: 400;
         }
 
-        a:hover {
+        a.instagram-link:hover {
             background: rgba(0, 149, 246, 0.1);
             color: #00376b;
+            text-decoration: underline;
         }
 
-        a.visited {
+        a.instagram-link.visited {
             color: #40C057;
             text-decoration: line-through;
             opacity: 0.8;
         }
 
-        a.visited:hover {
+        a.instagram-link.visited:hover {
             background: rgba(64, 192, 87, 0.1);
+            text-decoration: line-through underline;
         }
 
         .open-actions {
@@ -633,24 +636,12 @@
             updateLinkDisplay();
         }
 
-        // Desmarcar um link como visitado
-        function markAsUnclicked(link) {
-            clickedLinks.delete(link);
-            saveClickedLinks();
-            updateLinkDisplay();
-        }
-
-        // Abrir link em nova aba
-        function openInNewTab(url) {
-            window.open(url, '_blank');
-        }
-
         // Atualizar a exibição dos links
         function updateLinkDisplay() {
-            const links = document.querySelectorAll('#result a');
+            const links = document.querySelectorAll('#result a.instagram-link');
             
             links.forEach(link => {
-                const linkHref = link.getAttribute('data-href') || link.href;
+                const linkHref = link.href;
                 const listItem = link.closest('li');
                 const indicator = listItem.querySelector('.click-indicator');
                 
@@ -669,8 +660,8 @@
 
         // Atualizar estatísticas
         function updateStats() {
-            const totalLinks = document.querySelectorAll('#result a').length;
-            const visitedCount = document.querySelectorAll('#result a.visited').length;
+            const totalLinks = document.querySelectorAll('#result a.instagram-link').length;
+            const visitedCount = document.querySelectorAll('#result a.instagram-link.visited').length;
             const unvisitedCount = totalLinks - visitedCount;
             
             let statsDiv = document.querySelector('.stats');
@@ -689,11 +680,12 @@
                 instructionsDiv.innerHTML = `
                     <strong><i class="fas fa-info-circle"></i> Instruções de Uso:</strong><br>
                     <div style="margin-top: 8px;">
-                    • <strong>Clique Esquerdo</strong> no @ → Apenas marca como visitado<br>
+                    • <strong>Clique Esquerdo</strong> no @ → Marca como visitado (NÃO abre o link)<br>
                     • <strong>Clique do Meio (Roda)</strong> → Abre em nova aba <strong>E</strong> marca<br>
-                    • <strong>CTRL + Clique</strong> → Abre em nova aba <strong>E</strong> marca<br>
+                    • <strong>CTRL + Clique Esquerdo</strong> → Abre em nova aba <strong>E</strong> marca<br>
                     • <strong>Botão "Abrir"</strong> → Abre na mesma aba e marca<br>
-                    • <strong>Botão "Nova Aba"</strong> → Abre em nova aba e marca
+                    • <strong>Botão "Nova Aba"</strong> → Abre em nova aba e marca<br>
+                    • <strong>Botão Direito + "Abrir em nova aba"</strong> → Funciona normalmente
                     </div>
                 `;
                 const resultDiv = document.getElementById('result');
@@ -743,7 +735,7 @@
                 e.preventDefault();
                 e.stopPropagation();
                 markAsClicked(url);
-                openInNewTab(url);
+                window.open(url, '_blank', 'noopener,noreferrer');
             });
             
             container.appendChild(openSameBtn);
@@ -839,53 +831,73 @@
                     indicator.className = "click-indicator";
                     linkContainer.appendChild(indicator);
                     
-                    // Link do Instagram (apenas para marcar, não navega)
+                    // **SOLUÇÃO DEFINITIVA: Link REAL com href correto**
                     const a = document.createElement("a");
-                    a.href = "#"; // Não navega - apenas placeholder
-                    a.setAttribute('data-href', url); // Guarda a URL real
-                    a.textContent = `${user}`;
-                    a.title = `@${user}\n\nClique esquerdo: apenas marca como visitado\nClique do meio ou CTRL+clique: abre em nova aba\n\nUse os botões para navegar para o perfil.`;
+                    a.className = "instagram-link";
+                    a.href = url; // LINK REAL do Instagram!
+                    a.target = "_blank"; // Abre em nova aba por padrão
+                    a.rel = "noopener noreferrer";
+                    a.textContent = user;
+                    a.title = `@${user}\n\n• Clique Esquerdo: apenas marca como visitado\n• Clique do Meio: abre em nova aba e marca\n• CTRL+Clique: abre em nova aba e marca\n• Botão Direito: menu completo do navegador`;
                     
-                    // ** CORREÇÃO DO BUG: Mouseup para clique do meio **
-                    a.addEventListener('mouseup', function(e) {
-                        // e.button === 1 é o clique do meio (roda)
-                        if (e.button === 1) {
-                            // Marca o link como clicado
-                            markAsClicked(url);
-                            // Permite que o navegador abra em nova aba (comportamento padrão)
-                            // Não usamos e.preventDefault() aqui
-                        }
-                    });
-
-                    // ** CORREÇÃO DO BUG: Evento de clique corrigido **
+                    // **EVENTO CLICK - comportamento controlado**
                     a.addEventListener('click', function(e) {
-                        // IMPORTANTE: Sempre prevenir comportamento padrão
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        // Clique normal (e.button === 0 e sem teclas modificadoras) - APENAS MARCA
+                        // Se for apenas clique esquerdo simples (sem CTRL, Shift, etc)
                         if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
-                            markAsClicked(url);
-                            // NÃO ABRE NENHUM LINK - apenas marca
-                            return;
-                        } 
-                        
-                        // CTRL+clique (e.button === 0 e com CTRL/Shift/Meta/Alt) - abre em nova aba E marca
-                        if (e.button === 0 && (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey)) {
-                            markAsClicked(url);
-                            openInNewTab(url);
-                            return;
-                        }
-                    });
-                    
-                    // Também marca com Enter
-                    a.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter') {
+                            // Previne a navegação padrão
                             e.preventDefault();
                             e.stopPropagation();
+                            
+                            // Apenas marca como visitado, NÃO abre o link
                             markAsClicked(url);
+                            return;
+                        }
+                        
+                        // Se for CTRL+clique ou CMD+clique (Mac)
+                        if ((e.ctrlKey || e.metaKey) && e.button === 0) {
+                            // Permite o comportamento padrão (abrir em nova aba)
+                            // E também marca como visitado
+                            markAsClicked(url);
+                            // O navegador cuida de abrir em nova aba
+                            return;
+                        }
+                        
+                        // Para outros tipos de clique (Shift+clique, etc), permite comportamento padrão
+                    });
+                    
+                    // **EVENTO AUXCLICK - para clique do meio (roda do mouse)**
+                    a.addEventListener('auxclick', function(e) {
+                        // e.button === 1 é o clique do meio
+                        if (e.button === 1) {
+                            // Marca como visitado
+                            markAsClicked(url);
+                            // Permite comportamento padrão (abrir em nova aba)
+                            // Não precisa de preventDefault()
+                            return;
                         }
                     });
+                    
+                    // **EVENTO KEYDOWN - para teclado**
+                    a.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') {
+                            // Se for Enter + CTRL/CMD
+                            if (e.ctrlKey || e.metaKey) {
+                                markAsClicked(url);
+                                // Abre em nova aba
+                                window.open(url, '_blank', 'noopener,noreferrer');
+                                e.preventDefault();
+                            }
+                            // Enter normal - apenas marca, não navega
+                            else {
+                                e.preventDefault();
+                                markAsClicked(url);
+                            }
+                        }
+                    });
+                    
+                    // **EVENTO CONTEXTMENU - botão direito**
+                    // Deixa o menu padrão do navegador funcionar normalmente
+                    // O usuário pode usar "Abrir em nova aba", "Abrir em nova janela", etc
                     
                     linkContainer.appendChild(a);
                     li.appendChild(linkContainer);
@@ -908,20 +920,26 @@
 
         // Botão copiar
         document.getElementById("copyBtn").addEventListener("click", () => {
-            const resultLinks = document.querySelectorAll("#result a[data-href]");
-            if (resultLinks.length === 0) return alert("Nada para copiar!");
-            const textToCopy = Array.from(resultLinks).map(a => a.getAttribute('data-href')).join("\n");
-            navigator.clipboard.writeText(textToCopy);
+            const links = document.querySelectorAll("#result a.instagram-link");
+            if (links.length === 0) return alert("Nada para copiar!");
+            const textToCopy = Array.from(links).map(a => a.href).join("\n");
             
-            // Feedback visual
-            const copyBtn = document.getElementById("copyBtn");
-            const originalHTML = copyBtn.innerHTML;
-            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
-            copyBtn.style.background = 'linear-gradient(45deg, #40C057, #2F9E44)';
-            setTimeout(() => {
-                copyBtn.innerHTML = originalHTML;
-                copyBtn.style.background = 'linear-gradient(45deg, #E1306C, #C13584)';
-            }, 2000);
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => {
+                    // Feedback visual
+                    const copyBtn = document.getElementById("copyBtn");
+                    const originalHTML = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                    copyBtn.style.background = 'linear-gradient(45deg, #40C057, #2F9E44)';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalHTML;
+                        copyBtn.style.background = 'linear-gradient(45deg, #E1306C, #C13584)';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Erro ao copiar:', err);
+                    alert('Erro ao copiar para a área de transferência');
+                });
         });
 
         // Botão limpar tudo
