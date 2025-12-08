@@ -1,512 +1,771 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Filtro Inteligente de Perfis que NÃO te Seguem</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fafafa;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    margin: 0;
-    padding: 40px 20px;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram - Comparador de Seguidores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  h1 {
-    font-size: 28px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 30px;
-    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
 
-  h4 {
-    text-align: center;
-    color: #555;
-    margin-top: -20px;
-    margin-bottom: 30px;
-  }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
 
-  .container {
-    background: #fff;
-    border: 1px solid #dbdbdb;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    width: 100%;
-    max-width: 700px;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-    transition: box-shadow 0.3s ease;
-  }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
 
-  .container:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.07); }
+        h1 {
+            color: #E4405F;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-  label { font-weight: 500; color: #262626; }
+        .subtitle {
+            color: #555;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
 
-  textarea {
-    width: 100%;
-    height: 120px;
-    padding: 14px;
-    border-radius: 12px;
-    border: 1px solid #dbdbdb;
-    background: #fafafa;
-    font-size: 14px;
-    resize: none;
-    transition: all 0.25s ease;
-  }
+        .content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
 
-  textarea:focus {
-    outline: none;
-    background: #fff;
-    border-color: #dd2a7b;
-    box-shadow: 0 0 0 3px rgba(221,42,123,0.15);
-  }
+        .input-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+        }
 
-  .buttons {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 10px;
-  }
+        h2 {
+            color: #E4405F;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-  button {
-    border: none;
-    color: #fff;
-    padding: 12px 26px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.25s ease;
-  }
+        h2 i {
+            font-size: 1.6rem;
+        }
 
-  #processar {
-    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
-  }
-  #processar:hover { opacity: 0.9; transform: scale(1.03); }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
 
-  #copyBtn { background-color: #3897f0; }
-  #copyBtn:hover { background-color: #2d84d6; transform: scale(1.03); }
+        textarea:focus {
+            outline: none;
+            border-color: #E4405F;
+            box-shadow: 0 0 0 3px rgba(228, 64, 95, 0.1);
+            background: white;
+        }
 
-  #clearBtn { background-color: #ed4956; }
-  #clearBtn:hover { background-color: #d73342; transform: scale(1.03); }
+        textarea::placeholder {
+            color: #888;
+        }
 
-  #clearHistoryBtn { background-color: #8e44ad; }
-  #clearHistoryBtn:hover { background-color: #7d3c98; transform: scale(1.03); }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
 
-  #output {
-    text-align: center;
-    color: #262626;
-    font-weight: 500;
-    margin-top: 10px;
-  }
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-width: 150px;
+        }
 
-  #result {
-    background: #fafafa;
-    border-radius: 12px;
-    border: 1px solid #dbdbdb;
-    padding: 16px;
-    font-size: 14px;
-    max-height: 340px;
-    overflow-y: auto;
-    white-space: normal;
-    word-wrap: break-word;
-  }
+        #processar {
+            background: linear-gradient(135deg, #E4405F 0%, #C13584 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(228, 64, 95, 0.4);
+        }
 
-  #result a {
-    color: #0095f6;
-    text-decoration: none;
-    transition: color 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    margin-right: 8px;
-  }
+        #processar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(228, 64, 95, 0.6);
+        }
 
-  #result a.visited {
-    color: #8e8e8e;
-    text-decoration: line-through;
-  }
+        #copyBtn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
 
-  #result a:hover { color: #dd2a7b; }
+        #copyBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.6);
+        }
 
-  #result ol { margin: 0; padding-left: 20px; }
+        #clearBtn {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+        }
 
-  #result li {
-    margin-bottom: 8px;
-    padding: 5px 0;
-    display: flex;
-    align-items: center;
-  }
+        #clearBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.6);
+        }
 
-  .click-indicator {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 10px;
-    background-color: #ccc;
-    transition: background-color 0.3s ease;
-  }
+        #clearHistoryBtn {
+            background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(126, 126, 126, 0.4);
+        }
 
-  .click-indicator.visited {
-    background-color: #4CAF50;
-  }
+        #clearHistoryBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(126, 126, 126, 0.6);
+        }
 
-  .click-manual-btn {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 2px 8px;
-    font-size: 11px;
-    margin-left: 8px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
+        .output-section {
+            margin-top: 40px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
 
-  .click-manual-btn:hover {
-    background: #45a049;
-  }
+        #output {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #E4405F;
+        }
 
-  .click-manual-btn.visited {
-    background: #ff9800;
-  }
+        #result {
+            display: none;
+        }
 
-  .click-manual-btn.visited:hover {
-    background: #f57c00;
-  }
+        .stats, .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #2196F3;
+            font-size: 14px;
+            line-height: 1.5;
+        }
 
-  .stats {
-    background: #f0f8ff;
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-bottom: 16px;
-    font-size: 14px;
-    color: #333;
-    border-left: 4px solid #3897f0;
-  }
+        .instructions {
+            background: #fff8e1;
+            border-left: 5px solid #ffc107;
+        }
 
-  footer {
-    margin-top: 40px;
-    text-align: center;
-    color: #8e8e8e;
-    font-size: 13px;
-  }
+        .stats strong, .instructions strong {
+            color: #1976d2;
+        }
 
-  footer span {
-    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 600;
-  }
-</style>
+        .instructions strong {
+            color: #ff9800;
+        }
+
+        ol {
+            counter-reset: item;
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        li:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        li:before {
+            content: counter(item) ". ";
+            counter-increment: item;
+            font-weight: bold;
+            color: #E4405F;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            min-width: 30px;
+        }
+
+        .link-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .click-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            border: 2px solid #999;
+            transition: all 0.3s;
+        }
+
+        .click-indicator.visited {
+            background: #4CAF50;
+            border-color: #388E3C;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+
+        a {
+            color: #E4405F;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 5px;
+            flex: 1;
+        }
+
+        a:hover {
+            background: rgba(228, 64, 95, 0.1);
+            color: #C13584;
+        }
+
+        a.visited {
+            color: #4CAF50;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        a.visited:hover {
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .open-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .open-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #2196F3;
+            color: white;
+        }
+
+        .open-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+        }
+
+        .open-btn.new-tab {
+            background: #673AB7;
+        }
+
+        .open-btn.new-tab:hover {
+            box-shadow: 0 4px 8px rgba(103, 58, 183, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .tip {
+            background: #fff3cd;
+            color: #856404;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+            font-size: 14px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .open-actions {
+                margin-left: 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            textarea {
+                height: 150px;
+            }
+            
+            .input-section {
+                padding: 15px;
+            }
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Ícones */
+        .icon {
+            display: inline-block;
+            font-style: normal;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-users"></i> Comparador de Seguidores Instagram</h1>
+            <p class="subtitle">Descubra quem segue o alvo mas não te segue de volta</p>
+        </header>
 
-<h1>🔍 Filtro Instagram</h1>
-<h4>Descubra as contas que seguem o teu alvo, mas não te segue.</h4>
+        <div class="content">
+            <div class="input-section">
+                <h2><i class="fas fa-user-friends"></i> Quem você segue</h2>
+                <textarea id="meusSeguindo" placeholder="Cole aqui a lista de quem você segue (opcional)&#10;Exemplo:&#10;@usuario1&#10;@usuario2&#10;@usuario3"></textarea>
+            </div>
 
-<div class="container">
-  <label>📱 Sua lista de seguidores (quem te segue):</label>
-  <textarea id="meusSeguidores" placeholder="Cole aqui os seus seguidores..."></textarea>
+            <div class="input-section">
+                <h2><i class="fas fa-user-check"></i> Seus seguidores</h2>
+                <textarea id="meusSeguidores" placeholder="Cole aqui sua lista de seguidores (obrigatório)&#10;Exemplo:&#10;@amigo1&#10;@amigo2&#10;@seguidor3"></textarea>
+            </div>
 
-  <label>👥 (Opcional) Lista de pessoas que você segue:</label>
-  <textarea id="meusSeguindo" placeholder="Cole aqui quem você segue... (opcional)"></textarea>
+            <div class="input-section">
+                <h2><i class="fas fa-bullseye"></i> Seguidores do alvo</h2>
+                <textarea id="seguidoresAlvo" placeholder="Cole aqui a lista de seguidores do perfil alvo (obrigatório)&#10;Exemplo:&#10;@influencer&#10;@marca&#10;@celebridade"></textarea>
+            </div>
+        </div>
 
-  <label>🎯 Lista de seguidores do alvo:</label>
-  <textarea id="seguidoresAlvo" placeholder="Cole aqui os seguidores do seu alvo..."></textarea>
+        <div class="tip">
+            <i class="fas fa-lightbulb"></i> <strong>Dica:</strong> Para obter as listas, use ferramentas de exportação do Instagram ou sites de análise de seguidores.
+        </div>
 
-  <div class="buttons">
-    <button id="processar">Filtrar</button>
-    <button id="copyBtn">Copiar Resultado</button>
-    <button id="clearBtn">Limpar Tudo</button>
-    <button id="clearHistoryBtn">Limpar Histórico</button>
-  </div>
+        <div class="button-group">
+            <button id="processar">
+                <i class="fas fa-play-circle"></i> Processar Listas
+            </button>
+            <button id="copyBtn">
+                <i class="fas fa-copy"></i> Copiar Resultados
+            </button>
+            <button id="clearBtn">
+                <i class="fas fa-broom"></i> Limpar Tudo
+            </button>
+            <button id="clearHistoryBtn">
+                <i class="fas fa-history"></i> Limpar Histórico
+            </button>
+        </div>
 
-  <p id="output"></p>
-  <div id="result" style="display:none;"></div>
-</div>
+        <div class="output-section">
+            <div id="output">Aguardando processamento...</div>
+            <div id="result"></div>
+        </div>
 
-<footer>
-  <p>Desenvolvido com ❤️ e inspiração no <span>Instagram</span></p>
-</footer>
+        <footer>
+            <p><i class="fas fa-shield-alt"></i> Seus dados são processados localmente no seu navegador</p>
+            <p>Ferramenta desenvolvida para análise de redes sociais</p>
+        </footer>
+    </div>
 
-<script>
-// Armazenamento local para links clicados
-let clickedLinks = new Set();
+    <script>
+        // Armazenamento local para links clicados
+        let clickedLinks = new Set();
 
-// Carregar links clicados do localStorage
-function loadClickedLinks() {
-  const saved = localStorage.getItem('instagramClickedLinks');
-  if (saved) {
-    clickedLinks = new Set(JSON.parse(saved));
-  }
-}
-
-// Salvar links clicados no localStorage
-function saveClickedLinks() {
-  localStorage.setItem('instagramClickedLinks', JSON.stringify([...clickedLinks]));
-}
-
-// Marcar um link como visitado
-function markAsClicked(link) {
-  clickedLinks.add(link);
-  saveClickedLinks();
-  updateLinkDisplay();
-}
-
-// Desmarcar um link como visitado
-function markAsUnclicked(link) {
-  clickedLinks.delete(link);
-  saveClickedLinks();
-  updateLinkDisplay();
-}
-
-// Atualizar a exibição dos links
-function updateLinkDisplay() {
-  const links = document.querySelectorAll('#result a');
-  const manualButtons = document.querySelectorAll('.click-manual-btn');
-  
-  links.forEach(link => {
-    const linkHref = link.href;
-    const listItem = link.closest('li');
-    const indicator = listItem.querySelector('.click-indicator');
-    
-    if (clickedLinks.has(linkHref)) {
-      link.classList.add('visited');
-      indicator.classList.add('visited');
-    } else {
-      link.classList.remove('visited');
-      indicator.classList.remove('visited');
-    }
-  });
-  
-  manualButtons.forEach(button => {
-    const linkHref = button.getAttribute('data-link');
-    if (clickedLinks.has(linkHref)) {
-      button.textContent = 'Desmarcar';
-      button.classList.add('visited');
-    } else {
-      button.textContent = 'Marcar';
-      button.classList.remove('visited');
-    }
-  });
-  
-  // Atualizar estatísticas
-  updateStats();
-}
-
-// Atualizar estatísticas
-function updateStats() {
-  const totalLinks = document.querySelectorAll('#result a').length;
-  const visitedCount = document.querySelectorAll('#result a.visited').length;
-  const unvisitedCount = totalLinks - visitedCount;
-  
-  let statsDiv = document.querySelector('.stats');
-  if (!statsDiv && totalLinks > 0) {
-    statsDiv = document.createElement('div');
-    statsDiv.className = 'stats';
-    const resultDiv = document.getElementById('result');
-    resultDiv.insertBefore(statsDiv, resultDiv.firstChild);
-  }
-  
-  if (statsDiv && totalLinks > 0) {
-    statsDiv.innerHTML = `
-      <strong>Estatísticas:</strong> 
-      ${visitedCount} visitados • 
-      ${unvisitedCount} não visitados • 
-      ${totalLinks} total
-      <br><small>Clique em "Marcar" se o link foi aberto com botão do meio ou CTRL+clique</small>
-    `;
-  }
-}
-
-// Criar botão manual de marcação
-function createManualButton(link) {
-  const button = document.createElement('button');
-  button.className = 'click-manual-btn';
-  button.setAttribute('data-link', link);
-  button.textContent = clickedLinks.has(link) ? 'Desmarcar' : 'Marcar';
-  
-  button.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const linkHref = this.getAttribute('data-link');
-    if (clickedLinks.has(linkHref)) {
-      markAsUnclicked(linkHref);
-    } else {
-      markAsClicked(linkHref);
-    }
-  });
-  
-  return button;
-}
-
-// Verificar periodicamente se a aba foi aberta
-function checkIfTabWasOpened(linkElement) {
-  // Esta é uma solução alternativa para detectar cliques que não são capturados
-  // Monitora por mudanças no foco da janela
-  let originalFocus = document.hasFocus();
-  
-  const checkFocus = setInterval(() => {
-    if (!document.hasFocus() && originalFocus) {
-      // O usuário mudou para outra janela/aba - provavelmente abriu o link
-      markAsClicked(linkElement.href);
-      clearInterval(checkFocus);
-    }
-  }, 100);
-  
-  // Limpar após 5 segundos
-  setTimeout(() => clearInterval(checkFocus), 5000);
-}
-
-// Processar os dados
-document.getElementById("processar").addEventListener("click", () => {
-  const meusSeguidoresText = document.getElementById("meusSeguidores").value.trim();
-  const meusSeguindoText = document.getElementById("meusSeguindo").value.trim();
-  const seguidoresAlvoText = document.getElementById("seguidoresAlvo").value.trim();
-  const resultDiv = document.getElementById("result");
-  const output = document.getElementById("output");
-
-  if (!meusSeguidoresText || !seguidoresAlvoText) {
-    alert("Por favor, cole sua lista de seguidores e a do alvo antes de continuar!");
-    return;
-  }
-
-  // Lista de palavras proibidas (ignoradas automaticamente)
-  const ignorar = [
-    "sobre","ajuda","imprensa","api","carreiras","privacidade","termos",
-    "localizações","idioma","português (brasil)","meta verified",
-    "© 2025 instagram from meta","página inicial","explorar","reels","9+",
-    "mensagens","notificações","foto do perfil de afroscientist","perfil",
-    "meta ai","threads","mais"
-  ];
-
-  const regexID = /^[a-zA-Z0-9._@]+$/;
-  const limpar = texto => texto.split(/\r?\n/)
-    .map(l => l.trim().toLowerCase().replace(/^@/, ''))
-    .filter(l =>
-      l &&
-      regexID.test(l) &&
-      !ignorar.some(termo => l.includes(termo))
-    );
-
-  const meusSeguidores = new Set(limpar(meusSeguidoresText));
-  const meusSeguindo = meusSeguindoText ? new Set(limpar(meusSeguindoText)) : null;
-  const seguidoresAlvo = limpar(seguidoresAlvoText);
-
-  // Filtra quem segue o alvo, mas não te segue
-  let resultado = seguidoresAlvo.filter(id => !meusSeguidores.has(id));
-
-  // Se o usuário informou quem ele segue, filtra também quem ele já segue
-  if (meusSeguindo) {
-    resultado = resultado.filter(id => !meusSeguindo.has(id));
-  }
-
-  if (resultado.length === 0) {
-    output.textContent = "⚠️ Nenhum perfil novo encontrado — todos já te seguem ou você já os segue.";
-    resultDiv.style.display = "none";
-  } else {
-    const mensagem = meusSeguindo
-      ? `✅ ${resultado.length} perfis seguem o alvo, não te seguem e você ainda não segue.`
-      : `✅ ${resultado.length} perfis seguem o alvo mas ainda não te seguem.`;
-    output.textContent = mensagem;
-    resultDiv.style.display = "block";
-
-    const lista = document.createElement("ol");
-    resultado.forEach(user => {
-      const li = document.createElement("li");
-      
-      // Indicador visual de clique
-      const indicator = document.createElement("span");
-      indicator.className = "click-indicator";
-      li.appendChild(indicator);
-      
-      // Link do Instagram
-      const a = document.createElement("a");
-      a.href = `https://www.instagram.com/${user}/`;
-      a.target = "_blank"; // SEMPRE abre em nova aba
-      a.textContent = `@${user}`;
-      
-      // Adicionar evento para capturar cliques
-      a.addEventListener('click', function(e) {
-        // Se for clique normal (botão esquerdo sem mods), marca imediatamente
-        if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
-          markAsClicked(this.href);
-        } else {
-          // Para botão do meio ou CTRL+clique, verifica se a aba foi aberta
-          checkIfTabWasOpened(this);
+        // Carregar links clicados do localStorage
+        function loadClickedLinks() {
+            const saved = localStorage.getItem('instagramClickedLinks');
+            if (saved) {
+                clickedLinks = new Set(JSON.parse(saved));
+            }
         }
-      });
-      
-      // Também captura eventos de teclado (Enter no link)
-      a.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-          markAsClicked(this.href);
+
+        // Salvar links clicados no localStorage
+        function saveClickedLinks() {
+            localStorage.setItem('instagramClickedLinks', JSON.stringify([...clickedLinks]));
         }
-      });
-      
-      li.appendChild(a);
-      
-      // Botão manual para marcar/desmarcar
-      const manualBtn = createManualButton(a.href);
-      li.appendChild(manualBtn);
-      
-      lista.appendChild(li);
-    });
 
-    resultDiv.innerHTML = "";
-    resultDiv.appendChild(lista);
-    
-    // Carregar links já clicados e atualizar display
-    loadClickedLinks();
-    updateLinkDisplay();
-  }
-});
+        // Marcar um link como visitado
+        function markAsClicked(link) {
+            clickedLinks.add(link);
+            saveClickedLinks();
+            updateLinkDisplay();
+        }
 
-// Botão copiar
-document.getElementById("copyBtn").addEventListener("click", () => {
-  const resultLinks = document.querySelectorAll("#result a");
-  if (resultLinks.length === 0) return alert("Nada para copiar!");
-  const textToCopy = Array.from(resultLinks).map(a => a.href).join("\n");
-  navigator.clipboard.writeText(textToCopy);
-  alert("✅ Lista copiada para a área de transferência!");
-});
+        // Desmarcar um link como visitado
+        function markAsUnclicked(link) {
+            clickedLinks.delete(link);
+            saveClickedLinks();
+            updateLinkDisplay();
+        }
 
-// Botão limpar tudo
-document.getElementById("clearBtn").addEventListener("click", () => {
-  document.getElementById("meusSeguidores").value = "";
-  document.getElementById("meusSeguindo").value = "";
-  document.getElementById("seguidoresAlvo").value = "";
-  document.getElementById("result").style.display = "none";
-  document.getElementById("output").textContent = "";
-});
+        // Abrir link em nova aba
+        function openInNewTab(url) {
+            window.open(url, '_blank');
+        }
 
-// Botão limpar histórico
-document.getElementById("clearHistoryBtn").addEventListener("click", () => {
-  if (confirm("Tem certeza que deseja limpar o histórico de links clicados?\nIsso não afeta as listas de seguidores.")) {
-    clickedLinks.clear();
-    localStorage.removeItem('instagramClickedLinks');
-    updateLinkDisplay();
-    alert("Histórico de cliques limpo!");
-  }
-});
+        // Atualizar a exibição dos links
+        function updateLinkDisplay() {
+            const links = document.querySelectorAll('#result a');
+            
+            links.forEach(link => {
+                const linkHref = link.getAttribute('data-href') || link.href;
+                const listItem = link.closest('li');
+                const indicator = listItem.querySelector('.click-indicator');
+                
+                if (clickedLinks.has(linkHref)) {
+                    link.classList.add('visited');
+                    indicator.classList.add('visited');
+                } else {
+                    link.classList.remove('visited');
+                    indicator.classList.remove('visited');
+                }
+            });
+            
+            // Atualizar estatísticas
+            updateStats();
+        }
 
-// Inicializar
-loadClickedLinks();
-</script>
+        // Atualizar estatísticas
+        function updateStats() {
+            const totalLinks = document.querySelectorAll('#result a').length;
+            const visitedCount = document.querySelectorAll('#result a.visited').length;
+            const unvisitedCount = totalLinks - visitedCount;
+            
+            let statsDiv = document.querySelector('.stats');
+            let instructionsDiv = document.querySelector('.instructions');
+            
+            if (!statsDiv && totalLinks > 0) {
+                statsDiv = document.createElement('div');
+                statsDiv.className = 'stats';
+                const resultDiv = document.getElementById('result');
+                resultDiv.insertBefore(statsDiv, resultDiv.firstChild);
+            }
+            
+            if (!instructionsDiv && totalLinks > 0) {
+                instructionsDiv = document.createElement('div');
+                instructionsDiv.className = 'instructions';
+                instructionsDiv.innerHTML = `
+                    <strong><i class="fas fa-info-circle"></i> Como usar:</strong><br>
+                    • <strong>Clique Esquerdo no @</strong> → Marca como visitado (fica na página)<br>
+                    • <strong>Clique do Meio (Roda) ou CTRL+clique</strong> → Abre em nova aba <strong>E</strong> marca<br>
+                    • <strong>Botão "Abrir"</strong> → Abre na mesma aba e marca<br>
+                    • <strong>Botão "Nova Aba"</strong> → Abre em nova aba e marca
+                `;
+                const resultDiv = document.getElementById('result');
+                const existingStats = resultDiv.querySelector('.stats');
+                if (existingStats) {
+                    resultDiv.insertBefore(instructionsDiv, existingStats.nextSibling);
+                } else {
+                    resultDiv.insertBefore(instructionsDiv, resultDiv.firstChild);
+                }
+            }
+            
+            if (statsDiv && totalLinks > 0) {
+                statsDiv.innerHTML = `
+                    <strong><i class="fas fa-chart-bar"></i> Estatísticas:</strong> 
+                    <span style="color:#4CAF50">${visitedCount} visitados</span> • 
+                    <span style="color:#E4405F">${unvisitedCount} não visitados</span> • 
+                    <span style="color:#2196F3">${totalLinks} total</span>
+                `;
+            }
+        }
 
+        // Criar botões de ação para cada link
+        function createActionButtons(url) {
+            const container = document.createElement('div');
+            container.className = 'open-actions';
+            
+            // Botão para abrir na mesma aba
+            const openSameBtn = document.createElement('button');
+            openSameBtn.className = 'open-btn';
+            openSameBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> Abrir';
+            openSameBtn.title = 'Abrir na mesma aba';
+            openSameBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                markAsClicked(url);
+                window.open(url, '_self');
+            });
+            
+            // Botão para abrir em nova aba
+            const openNewBtn = document.createElement('button');
+            openNewBtn.className = 'open-btn new-tab';
+            openNewBtn.innerHTML = '<i class="fas fa-external-link-square-alt"></i> Nova Aba';
+            openNewBtn.title = 'Abrir em nova aba';
+            openNewBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                markAsClicked(url);
+                openInNewTab(url);
+            });
+            
+            container.appendChild(openSameBtn);
+            container.appendChild(openNewBtn);
+            
+            return container;
+        }
+
+        // Processar os dados
+        document.getElementById("processar").addEventListener("click", () => {
+            const meusSeguidoresText = document.getElementById("meusSeguidores").value.trim();
+            const meusSeguindoText = document.getElementById("meusSeguindo").value.trim();
+            const seguidoresAlvoText = document.getElementById("seguidoresAlvo").value.trim();
+            const resultDiv = document.getElementById("result");
+            const output = document.getElementById("output");
+
+            if (!meusSeguidoresText || !seguidoresAlvoText) {
+                alert("Por favor, cole sua lista de seguidores e a do alvo antes de continuar!");
+                return;
+            }
+
+            // Lista de palavras proibidas (ignoradas automaticamente)
+            const ignorar = [
+                "sobre","ajuda","imprensa","api","carreiras","privacidade","termos",
+                "localizações","idioma","português (brasil)","meta verified",
+                "© 2025 instagram from meta","página inicial","explorar","reels","9+",
+                "mensagens","notificações","foto do perfil de","perfil",
+                "meta ai","threads","mais","criar","pesquisar","login","criar uma conta",
+                "baixe o aplicativo","diretório","hashtags","local","entrar na minha conta"
+            ];
+
+            const regexID = /^[a-zA-Z0-9._@]+$/;
+            const limpar = texto => texto.split(/\r?\n/)
+                .map(l => l.trim().toLowerCase().replace(/^@/, ''))
+                .filter(l =>
+                    l &&
+                    regexID.test(l) &&
+                    !ignorar.some(termo => l.includes(termo))
+                );
+
+            const meusSeguidores = new Set(limpar(meusSeguidoresText));
+            const meusSeguindo = meusSeguindoText ? new Set(limpar(meusSeguindoText)) : null;
+            const seguidoresAlvo = limpar(seguidoresAlvoText);
+
+            // Filtra quem segue o alvo, mas não te segue
+            let resultado = seguidoresAlvo.filter(id => !meusSeguidores.has(id));
+
+            // Se o usuário informou quem ele segue, filtra também quem ele já segue
+            if (meusSeguindo) {
+                resultado = resultado.filter(id => !meusSeguindo.has(id));
+            }
+
+            if (resultado.length === 0) {
+                output.innerHTML = '<span style="color:#ff9800;"><i class="fas fa-exclamation-triangle"></i> Nenhum perfil novo encontrado — todos já te seguem ou você já os segue.</span>';
+                resultDiv.style.display = "none";
+            } else {
+                const mensagem = meusSeguindo
+                    ? `<span style="color:#4CAF50;"><i class="fas fa-check-circle"></i> ${resultado.length} perfis seguem o alvo, não te seguem e você ainda não segue.</span>`
+                    : `<span style="color:#4CAF50;"><i class="fas fa-check-circle"></i> ${resultado.length} perfis seguem o alvo mas ainda não te seguem.</span>`;
+                output.innerHTML = mensagem;
+                resultDiv.style.display = "block";
+
+                const lista = document.createElement("ol");
+                resultado.forEach(user => {
+                    const li = document.createElement("li");
+                    const url = `https://www.instagram.com/${user}/`;
+                    
+                    // Container para link e indicador
+                    const linkContainer = document.createElement('div');
+                    linkContainer.className = 'link-container';
+                    
+                    // Indicador visual de clique
+                    const indicator = document.createElement("span");
+                    indicator.className = "click-indicator";
+                    linkContainer.appendChild(indicator);
+                    
+                    // Link do Instagram (apenas para marcar, não navega)
+                    const a = document.createElement("a");
+                    a.href = "#"; // Não navega
+                    a.setAttribute('data-href', url); // Guarda a URL real
+                    a.textContent = `@${user}`;
+                    a.title = `Clique esquerdo para marcar como visitado.\nClique do Meio ou CTRL+clique para abrir em nova aba E marcar.`;
+                    
+                    // ** NOVO: Evento mouseup para capturar o CLIQUE DO MEIO (e.button === 1) **
+                    a.addEventListener('mouseup', function(e) {
+                        // e.button === 1 é o clique do meio
+                        if (e.button === 1) {
+                            // Marca o link como clicado e permite que o navegador faça a ação padrão
+                            // do botão do meio (abrir em nova aba), pois não usamos e.preventDefault().
+                            markAsClicked(url);
+                        }
+                    });
+
+                    // Evento de clique (click) lida apenas com o clique esquerdo (e.button === 0)
+                    a.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Clique normal (e.button === 0 e sem teclas modificadoras) - apenas marca
+                        if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
+                            markAsClicked(url);
+                        } 
+                        // CTRL+clique (e.button === 0 e com CTRL/Shift/Meta/Alt) - abre em nova aba E marca
+                        else if (e.button === 0) {
+                            markAsClicked(url);
+                            openInNewTab(url);
+                        }
+                    });
+                    
+                    // Também marca com Enter
+                    a.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            markAsClicked(url);
+                        }
+                    });
+                    
+                    linkContainer.appendChild(a);
+                    li.appendChild(linkContainer);
+                    
+                    // Botões de ação (abrir/nova aba)
+                    const actionButtons = createActionButtons(url);
+                    li.appendChild(actionButtons);
+                    
+                    lista.appendChild(li);
+                });
+
+                resultDiv.innerHTML = "";
+                resultDiv.appendChild(lista);
+                
+                // Carregar links já clicados e atualizar display
+                loadClickedLinks();
+                updateLinkDisplay();
+            }
+        });
+
+        // Botão copiar
+        document.getElementById("copyBtn").addEventListener("click", () => {
+            const resultLinks = document.querySelectorAll("#result a[data-href]");
+            if (resultLinks.length === 0) return alert("Nada para copiar!");
+            const textToCopy = Array.from(resultLinks).map(a => a.getAttribute('data-href')).join("\n");
+            navigator.clipboard.writeText(textToCopy);
+            alert("✅ Lista copiada para a área de transferência!");
+        });
+
+        // Botão limpar tudo
+        document.getElementById("clearBtn").addEventListener("click", () => {
+            if (confirm("Tem certeza que deseja limpar todas as listas?")) {
+                document.getElementById("meusSeguidores").value = "";
+                document.getElementById("meusSeguindo").value = "";
+                document.getElementById("seguidoresAlvo").value = "";
+                document.getElementById("result").style.display = "none";
+                document.getElementById("output").textContent = "Aguardando processamento...";
+                
+                // Remover div de estatísticas e instruções, se existirem
+                const statsDiv = document.querySelector('.stats');
+                const instructionsDiv = document.querySelector('.instructions');
+                if (statsDiv) statsDiv.remove();
+                if (instructionsDiv) instructionsDiv.remove();
+            }
+        });
+
+        // Botão limpar histórico
+        document.getElementById("clearHistoryBtn").addEventListener("click", () => {
+            if (confirm("Tem certeza que deseja limpar o histórico de links clicados?\nIsso não afeta as listas de seguidores.")) {
+                clickedLinks.clear();
+                localStorage.removeItem('instagramClickedLinks');
+                updateLinkDisplay();
+                alert("Histórico de cliques limpo!");
+            }
+        });
+
+        // Inicializar
+        loadClickedLinks();
+    </script>
 </body>
 </html>
