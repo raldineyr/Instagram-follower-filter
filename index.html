@@ -9,181 +9,241 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #fafafa;
             min-height: 100vh;
             padding: 20px;
-            color: #333;
+            color: #262626;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 935px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+            background: white;
+            border-radius: 8px;
+            padding: 0;
+            box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 2px 4px rgba(0,0,0,.1);
         }
 
         header {
             text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
+            padding: 40px 20px 30px;
+            border-bottom: 1px solid #dbdbdb;
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            border-radius: 8px 8px 0 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
         }
 
         h1 {
-            color: #E4405F;
-            font-size: 2.8rem;
+            font-size: 32px;
+            font-weight: 600;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .subtitle {
-            color: #555;
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 400;
+            position: relative;
         }
 
         .content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #fafafa;
         }
 
         .input-section {
             background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #dbdbdb;
+            transition: all 0.2s ease;
+        }
+
+        .input-section:hover {
+            border-color: #c7c7c7;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         h2 {
-            color: #E4405F;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
+            color: #262626;
+            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #efefef;
         }
 
         h2 i {
-            font-size: 1.6rem;
+            color: #E1306C;
+            font-size: 18px;
         }
 
         textarea {
             width: 100%;
-            height: 200px;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            height: 180px;
+            padding: 14px;
+            border: 1px solid #dbdbdb;
+            border-radius: 6px;
             font-size: 14px;
             resize: vertical;
-            transition: all 0.3s;
-            background: #f8f9fa;
+            transition: all 0.2s;
+            background: #fafafa;
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            color: #262626;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #E4405F;
-            box-shadow: 0 0 0 3px rgba(228, 64, 95, 0.1);
+            border-color: #A8A8A8;
             background: white;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
         }
 
         textarea::placeholder {
-            color: #888;
+            color: #8e8e8e;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .button-group {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
             justify-content: center;
-            margin-top: 30px;
+            padding: 25px 30px;
+            background: white;
+            border-top: 1px solid #dbdbdb;
         }
 
         button {
-            padding: 14px 28px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 50px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            min-width: 150px;
+            gap: 8px;
+            min-width: 140px;
+            background: #0095f6;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 149, 246, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         #processar {
-            background: linear-gradient(135deg, #E4405F 0%, #C13584 100%);
-            color: white;
-            box-shadow: 0 5px 15px rgba(228, 64, 95, 0.4);
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4);
         }
 
         #processar:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(228, 64, 95, 0.6);
+            box-shadow: 0 4px 12px rgba(131, 58, 180, 0.3);
         }
 
         #copyBtn {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-            color: white;
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+            background: linear-gradient(45deg, #E1306C, #C13584);
         }
 
         #copyBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.6);
+            box-shadow: 0 4px 12px rgba(193, 53, 132, 0.3);
         }
 
         #clearBtn {
-            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
-            color: white;
-            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+            background: linear-gradient(45deg, #F56040, #F77737);
         }
 
         #clearBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.6);
+            box-shadow: 0 4px 12px rgba(247, 119, 55, 0.3);
         }
 
         #clearHistoryBtn {
-            background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
-            color: white;
-            box-shadow: 0 5px 15px rgba(126, 126, 126, 0.4);
+            background: linear-gradient(45deg, #8e8e8e, #a8a8a8);
         }
 
         #clearHistoryBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(126, 126, 126, 0.6);
+            box-shadow: 0 4px 12px rgba(142, 142, 142, 0.3);
         }
 
         .output-section {
-            margin-top: 40px;
+            padding: 25px 30px;
             background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-top: 1px solid #dbdbdb;
+            min-height: 300px;
         }
 
         #output {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            color: #333;
+            color: #262626;
             margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 5px solid #E4405F;
+            padding: 16px;
+            background: #fafafa;
+            border-radius: 8px;
+            border-left: 4px solid #0095f6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         #result {
@@ -191,26 +251,31 @@
         }
 
         .stats, .instructions {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 10px;
+            background: #fafafa;
+            padding: 16px;
+            border-radius: 8px;
             margin-bottom: 20px;
-            border-left: 5px solid #2196F3;
+            border: 1px solid #dbdbdb;
             font-size: 14px;
             line-height: 1.5;
+            color: #262626;
         }
 
         .instructions {
-            background: #fff8e1;
-            border-left: 5px solid #ffc107;
+            background: rgba(255, 237, 237, 0.3);
+            border-color: #ffcdd2;
         }
 
         .stats strong, .instructions strong {
-            color: #1976d2;
+            color: #0095f6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
         .instructions strong {
-            color: #ff9800;
+            color: #E1306C;
         }
 
         ol {
@@ -220,134 +285,177 @@
         }
 
         li {
-            padding: 15px;
-            margin-bottom: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
-            transition: all 0.3s;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #dbdbdb;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
         }
 
         li:hover {
-            background: #f0f0f0;
-            transform: translateX(5px);
+            border-color: #c7c7c7;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transform: translateX(2px);
         }
 
         li:before {
-            content: counter(item) ". ";
+            content: counter(item);
             counter-increment: item;
-            font-weight: bold;
-            color: #E4405F;
-            font-size: 1.2rem;
-            margin-right: 15px;
-            min-width: 30px;
+            font-weight: 600;
+            color: #8e8e8e;
+            font-size: 14px;
+            margin-right: 16px;
+            min-width: 24px;
+            text-align: center;
         }
 
         .link-container {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex: 1;
         }
 
         .click-indicator {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background: #ddd;
-            border: 2px solid #999;
-            transition: all 0.3s;
+            background: #dbdbdb;
+            border: 2px solid white;
+            box-shadow: 0 0 0 1px #dbdbdb;
+            transition: all 0.2s;
+            flex-shrink: 0;
         }
 
         .click-indicator.visited {
-            background: #4CAF50;
-            border-color: #388E3C;
-            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+            background: #40C057;
+            box-shadow: 0 0 0 1px #40C057, 0 2px 4px rgba(64, 192, 87, 0.3);
         }
 
         a {
-            color: #E4405F;
+            color: #0095f6;
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s;
-            padding: 5px 10px;
-            border-radius: 5px;
+            font-size: 15px;
+            transition: all 0.2s;
+            padding: 4px 8px;
+            border-radius: 4px;
             flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        a::before {
+            content: '@';
+            color: #8e8e8e;
+            font-weight: 400;
         }
 
         a:hover {
-            background: rgba(228, 64, 95, 0.1);
-            color: #C13584;
+            background: rgba(0, 149, 246, 0.1);
+            color: #00376b;
         }
 
         a.visited {
-            color: #4CAF50;
+            color: #40C057;
             text-decoration: line-through;
-            opacity: 0.7;
+            opacity: 0.8;
         }
 
         a.visited:hover {
-            background: rgba(76, 175, 80, 0.1);
+            background: rgba(64, 192, 87, 0.1);
         }
 
         .open-actions {
             display: flex;
-            gap: 10px;
-            margin-left: 20px;
+            gap: 8px;
+            margin-left: 16px;
         }
 
         .open-btn {
-            padding: 8px 16px;
-            border: none;
+            padding: 6px 12px;
+            border: 1px solid #dbdbdb;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            background: #2196F3;
-            color: white;
+            transition: all 0.2s;
+            background: white;
+            color: #262626;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .open-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+            background: #fafafa;
+            border-color: #c7c7c7;
+            transform: translateY(-1px);
         }
 
         .open-btn.new-tab {
-            background: #673AB7;
+            background: #0095f6;
+            color: white;
+            border-color: #0095f6;
         }
 
         .open-btn.new-tab:hover {
-            box-shadow: 0 4px 8px rgba(103, 58, 183, 0.3);
+            background: #0081d6;
+            border-color: #0081d6;
         }
 
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-            color: #666;
-            font-size: 14px;
+            padding: 20px 30px;
+            border-top: 1px solid #dbdbdb;
+            color: #8e8e8e;
+            font-size: 12px;
+            background: #fafafa;
+            border-radius: 0 0 8px 8px;
         }
 
         .tip {
-            background: #fff3cd;
-            color: #856404;
-            padding: 12px;
+            background: rgba(255, 251, 235, 1);
+            color: #8a6d3b;
+            padding: 14px 20px;
             border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #ffc107;
-            font-size: 14px;
+            margin: 0 30px 20px;
+            border: 1px solid #ffeaa7;
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
         }
 
-        /* Responsividade */
+        .tip i {
+            color: #f39c12;
+            margin-top: 2px;
+        }
+
+        .instagram-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
         @media (max-width: 768px) {
             .content {
                 grid-template-columns: 1fr;
+                padding: 20px;
             }
             
             .button-group {
@@ -360,23 +468,38 @@
             
             li {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
+                align-items: stretch;
+                gap: 12px;
             }
             
             .open-actions {
                 margin-left: 0;
-                width: 100%;
                 justify-content: flex-end;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 24px;
+            }
+            
+            .tip {
+                margin: 0 20px 20px;
             }
         }
 
         @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
             .container {
+                border-radius: 6px;
+            }
+            
+            header {
+                padding: 30px 20px;
+            }
+            
+            .content {
                 padding: 15px;
             }
             
@@ -385,26 +508,44 @@
             }
             
             .input-section {
-                padding: 15px;
+                padding: 16px;
+            }
+            
+            .output-section {
+                padding: 20px;
             }
         }
 
-        /* Animações */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        .container {
-            animation: fadeIn 0.5s ease-out;
+        .processing {
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
-        /* Ícones */
-        .icon {
-            display: inline-block;
-            font-style: normal;
-            font-weight: bold;
-            margin-right: 5px;
+        .loading-dots {
+            display: inline-flex;
+            gap: 4px;
+            margin-left: 10px;
+        }
+
+        .loading-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #dbdbdb;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -412,29 +553,32 @@
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-users"></i> Comparador de Seguidores Instagram</h1>
+            <h1><i class="fab fa-instagram"></i> Comparador de Seguidores</h1>
             <p class="subtitle">Descubra quem segue o alvo mas não te segue de volta</p>
         </header>
 
-        <div class="content">
-            <div class="input-section">
-                <h2><i class="fas fa-user-friends"></i> Quem você segue</h2>
-                <textarea id="meusSeguindo" placeholder="Cole aqui a lista de quem você segue (opcional)&#10;Exemplo:&#10;@usuario1&#10;@usuario2&#10;@usuario3"></textarea>
-            </div>
-
-            <div class="input-section">
-                <h2><i class="fas fa-user-check"></i> Seus seguidores</h2>
-                <textarea id="meusSeguidores" placeholder="Cole aqui sua lista de seguidores (obrigatório)&#10;Exemplo:&#10;@amigo1&#10;@amigo2&#10;@seguidor3"></textarea>
-            </div>
-
-            <div class="input-section">
-                <h2><i class="fas fa-bullseye"></i> Seguidores do alvo</h2>
-                <textarea id="seguidoresAlvo" placeholder="Cole aqui a lista de seguidores do perfil alvo (obrigatório)&#10;Exemplo:&#10;@influencer&#10;@marca&#10;@celebridade"></textarea>
+        <div class="tip">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Como usar:</strong> Cole as listas de seguidores obtidas através de ferramentas de análise do Instagram. O processamento é feito 100% localmente no seu navegador.
             </div>
         </div>
 
-        <div class="tip">
-            <i class="fas fa-lightbulb"></i> <strong>Dica:</strong> Para obter as listas, use ferramentas de exportação do Instagram ou sites de análise de seguidores.
+        <div class="content">
+            <div class="input-section">
+                <h2><i class="fas fa-user-friends"></i> Quem você segue <span class="instagram-badge">OPCIONAL</span></h2>
+                <textarea id="meusSeguindo" placeholder="Cole aqui a lista de quem você segue (opcional)&#10;&#10;Formato:&#10;usuario1&#10;usuario2&#10;usuario3"></textarea>
+            </div>
+
+            <div class="input-section">
+                <h2><i class="fas fa-user-check"></i> Seus seguidores <span class="instagram-badge">OBRIGATÓRIO</span></h2>
+                <textarea id="meusSeguidores" placeholder="Cole aqui sua lista de seguidores (obrigatório)&#10;&#10;Formato:&#10;amigo1&#10;amigo2&#10;seguidor3"></textarea>
+            </div>
+
+            <div class="input-section">
+                <h2><i class="fas fa-bullseye"></i> Seguidores do alvo <span class="instagram-badge">OBRIGATÓRIO</span></h2>
+                <textarea id="seguidoresAlvo" placeholder="Cole aqui a lista de seguidores do perfil alvo (obrigatório)&#10;&#10;Formato:&#10;influencer&#10;marca&#10;celebridade"></textarea>
+            </div>
         </div>
 
         <div class="button-group">
@@ -453,13 +597,15 @@
         </div>
 
         <div class="output-section">
-            <div id="output">Aguardando processamento...</div>
+            <div id="output">
+                <i class="fas fa-clock"></i> Aguardando processamento...
+            </div>
             <div id="result"></div>
         </div>
 
         <footer>
             <p><i class="fas fa-shield-alt"></i> Seus dados são processados localmente no seu navegador</p>
-            <p>Ferramenta desenvolvida para análise de redes sociais</p>
+            <p>© 2024 Instagram Tool • Não afiliado ao Instagram/Meta</p>
         </footer>
     </div>
 
@@ -541,11 +687,14 @@
                 instructionsDiv = document.createElement('div');
                 instructionsDiv.className = 'instructions';
                 instructionsDiv.innerHTML = `
-                    <strong><i class="fas fa-info-circle"></i> Como usar:</strong><br>
-                    • <strong>Clique Esquerdo no @</strong> → Marca como visitado (fica na página)<br>
-                    • <strong>Clique do Meio (Roda) ou CTRL+clique</strong> → Abre em nova aba <strong>E</strong> marca<br>
+                    <strong><i class="fas fa-info-circle"></i> Instruções de Uso:</strong><br>
+                    <div style="margin-top: 8px;">
+                    • <strong>Clique Esquerdo</strong> no @ → Apenas marca como visitado<br>
+                    • <strong>Clique do Meio (Roda)</strong> → Abre em nova aba <strong>E</strong> marca<br>
+                    • <strong>CTRL + Clique</strong> → Abre em nova aba <strong>E</strong> marca<br>
                     • <strong>Botão "Abrir"</strong> → Abre na mesma aba e marca<br>
                     • <strong>Botão "Nova Aba"</strong> → Abre em nova aba e marca
+                    </div>
                 `;
                 const resultDiv = document.getElementById('result');
                 const existingStats = resultDiv.querySelector('.stats');
@@ -558,10 +707,12 @@
             
             if (statsDiv && totalLinks > 0) {
                 statsDiv.innerHTML = `
-                    <strong><i class="fas fa-chart-bar"></i> Estatísticas:</strong> 
-                    <span style="color:#4CAF50">${visitedCount} visitados</span> • 
-                    <span style="color:#E4405F">${unvisitedCount} não visitados</span> • 
-                    <span style="color:#2196F3">${totalLinks} total</span>
+                    <strong><i class="fas fa-chart-bar"></i> Estatísticas:</strong>
+                    <div style="display: flex; gap: 16px; margin-top: 8px;">
+                        <span style="color:#40C057"><i class="fas fa-check-circle"></i> ${visitedCount} visitados</span>
+                        <span style="color:#E1306C"><i class="fas fa-times-circle"></i> ${unvisitedCount} não visitados</span>
+                        <span style="color:#0095f6"><i class="fas fa-hashtag"></i> ${totalLinks} total</span>
+                    </div>
                 `;
             }
         }
@@ -574,7 +725,7 @@
             // Botão para abrir na mesma aba
             const openSameBtn = document.createElement('button');
             openSameBtn.className = 'open-btn';
-            openSameBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> Abrir';
+            openSameBtn.innerHTML = '<i class="fas fa-external-link-alt"></i>';
             openSameBtn.title = 'Abrir na mesma aba';
             openSameBtn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -586,7 +737,7 @@
             // Botão para abrir em nova aba
             const openNewBtn = document.createElement('button');
             openNewBtn.className = 'open-btn new-tab';
-            openNewBtn.innerHTML = '<i class="fas fa-external-link-square-alt"></i> Nova Aba';
+            openNewBtn.innerHTML = '<i class="fas fa-external-link-square-alt"></i>';
             openNewBtn.title = 'Abrir em nova aba';
             openNewBtn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -608,11 +759,30 @@
             const seguidoresAlvoText = document.getElementById("seguidoresAlvo").value.trim();
             const resultDiv = document.getElementById("result");
             const output = document.getElementById("output");
+            const processBtn = document.getElementById("processar");
 
             if (!meusSeguidoresText || !seguidoresAlvoText) {
                 alert("Por favor, cole sua lista de seguidores e a do alvo antes de continuar!");
                 return;
             }
+
+            // Adicionar efeito de processamento
+            processBtn.classList.add('processing');
+            output.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando listas... <span class="loading-dots"><span></span><span></span><span></span></span>';
+
+            // Simular processamento assíncrono para melhor UX
+            setTimeout(() => {
+                processListas();
+                processBtn.classList.remove('processing');
+            }, 300);
+        });
+
+        function processListas() {
+            const meusSeguidoresText = document.getElementById("meusSeguidores").value.trim();
+            const meusSeguindoText = document.getElementById("meusSeguindo").value.trim();
+            const seguidoresAlvoText = document.getElementById("seguidoresAlvo").value.trim();
+            const resultDiv = document.getElementById("result");
+            const output = document.getElementById("output");
 
             // Lista de palavras proibidas (ignoradas automaticamente)
             const ignorar = [
@@ -646,17 +816,17 @@
             }
 
             if (resultado.length === 0) {
-                output.innerHTML = '<span style="color:#ff9800;"><i class="fas fa-exclamation-triangle"></i> Nenhum perfil novo encontrado — todos já te seguem ou você já os segue.</span>';
+                output.innerHTML = '<span style="color:#F56040"><i class="fas fa-exclamation-circle"></i> Nenhum perfil novo encontrado — todos já te seguem ou você já os segue.</span>';
                 resultDiv.style.display = "none";
             } else {
                 const mensagem = meusSeguindo
-                    ? `<span style="color:#4CAF50;"><i class="fas fa-check-circle"></i> ${resultado.length} perfis seguem o alvo, não te seguem e você ainda não segue.</span>`
-                    : `<span style="color:#4CAF50;"><i class="fas fa-check-circle"></i> ${resultado.length} perfis seguem o alvo mas ainda não te seguem.</span>`;
+                    ? `<span style="color:#40C057"><i class="fas fa-check-circle"></i> ${resultado.length} perfis seguem o alvo, não te seguem e você ainda não segue.</span>`
+                    : `<span style="color:#40C057"><i class="fas fa-check-circle"></i> ${resultado.length} perfis seguem o alvo mas ainda não te seguem.</span>`;
                 output.innerHTML = mensagem;
                 resultDiv.style.display = "block";
 
                 const lista = document.createElement("ol");
-                resultado.forEach(user => {
+                resultado.forEach((user, index) => {
                     const li = document.createElement("li");
                     const url = `https://www.instagram.com/${user}/`;
                     
@@ -671,33 +841,40 @@
                     
                     // Link do Instagram (apenas para marcar, não navega)
                     const a = document.createElement("a");
-                    a.href = "#"; // Não navega
+                    a.href = "#"; // Não navega - apenas placeholder
                     a.setAttribute('data-href', url); // Guarda a URL real
-                    a.textContent = `@${user}`;
-                    a.title = `Clique esquerdo para marcar como visitado.\nClique do Meio ou CTRL+clique para abrir em nova aba E marcar.`;
+                    a.textContent = `${user}`;
+                    a.title = `@${user}\n\nClique esquerdo: apenas marca como visitado\nClique do meio ou CTRL+clique: abre em nova aba\n\nUse os botões para navegar para o perfil.`;
                     
-                    // ** NOVO: Evento mouseup para capturar o CLIQUE DO MEIO (e.button === 1) **
+                    // ** CORREÇÃO DO BUG: Mouseup para clique do meio **
                     a.addEventListener('mouseup', function(e) {
-                        // e.button === 1 é o clique do meio
+                        // e.button === 1 é o clique do meio (roda)
                         if (e.button === 1) {
-                            // Marca o link como clicado e permite que o navegador faça a ação padrão
-                            // do botão do meio (abrir em nova aba), pois não usamos e.preventDefault().
+                            // Marca o link como clicado
                             markAsClicked(url);
+                            // Permite que o navegador abra em nova aba (comportamento padrão)
+                            // Não usamos e.preventDefault() aqui
                         }
                     });
 
-                    // Evento de clique (click) lida apenas com o clique esquerdo (e.button === 0)
+                    // ** CORREÇÃO DO BUG: Evento de clique corrigido **
                     a.addEventListener('click', function(e) {
+                        // IMPORTANTE: Sempre prevenir comportamento padrão
                         e.preventDefault();
+                        e.stopPropagation();
                         
-                        // Clique normal (e.button === 0 e sem teclas modificadoras) - apenas marca
+                        // Clique normal (e.button === 0 e sem teclas modificadoras) - APENAS MARCA
                         if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
                             markAsClicked(url);
+                            // NÃO ABRE NENHUM LINK - apenas marca
+                            return;
                         } 
+                        
                         // CTRL+clique (e.button === 0 e com CTRL/Shift/Meta/Alt) - abre em nova aba E marca
-                        else if (e.button === 0) {
+                        if (e.button === 0 && (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey)) {
                             markAsClicked(url);
                             openInNewTab(url);
+                            return;
                         }
                     });
                     
@@ -705,6 +882,7 @@
                     a.addEventListener('keydown', function(e) {
                         if (e.key === 'Enter') {
                             e.preventDefault();
+                            e.stopPropagation();
                             markAsClicked(url);
                         }
                     });
@@ -726,7 +904,7 @@
                 loadClickedLinks();
                 updateLinkDisplay();
             }
-        });
+        }
 
         // Botão copiar
         document.getElementById("copyBtn").addEventListener("click", () => {
@@ -734,7 +912,16 @@
             if (resultLinks.length === 0) return alert("Nada para copiar!");
             const textToCopy = Array.from(resultLinks).map(a => a.getAttribute('data-href')).join("\n");
             navigator.clipboard.writeText(textToCopy);
-            alert("✅ Lista copiada para a área de transferência!");
+            
+            // Feedback visual
+            const copyBtn = document.getElementById("copyBtn");
+            const originalHTML = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+            copyBtn.style.background = 'linear-gradient(45deg, #40C057, #2F9E44)';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalHTML;
+                copyBtn.style.background = 'linear-gradient(45deg, #E1306C, #C13584)';
+            }, 2000);
         });
 
         // Botão limpar tudo
@@ -744,7 +931,7 @@
                 document.getElementById("meusSeguindo").value = "";
                 document.getElementById("seguidoresAlvo").value = "";
                 document.getElementById("result").style.display = "none";
-                document.getElementById("output").textContent = "Aguardando processamento...";
+                document.getElementById("output").innerHTML = '<i class="fas fa-clock"></i> Aguardando processamento...';
                 
                 // Remover div de estatísticas e instruções, se existirem
                 const statsDiv = document.querySelector('.stats');
@@ -760,7 +947,16 @@
                 clickedLinks.clear();
                 localStorage.removeItem('instagramClickedLinks');
                 updateLinkDisplay();
-                alert("Histórico de cliques limpo!");
+                
+                // Feedback visual
+                const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+                const originalHTML = clearHistoryBtn.innerHTML;
+                clearHistoryBtn.innerHTML = '<i class="fas fa-check"></i> Histórico Limpo!';
+                clearHistoryBtn.style.background = 'linear-gradient(45deg, #40C057, #2F9E44)';
+                setTimeout(() => {
+                    clearHistoryBtn.innerHTML = originalHTML;
+                    clearHistoryBtn.style.background = 'linear-gradient(45deg, #8e8e8e, #a8a8a8)';
+                }, 2000);
             }
         });
 
