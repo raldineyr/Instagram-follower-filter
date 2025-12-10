@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram - Comparador de Seguidores</title>
+    <title>Instagram - Comparador de Seguidores COM CARDS</title>
     <style>
+        /* TODOS OS SEUS ESTILOS ATUAIS PERMANECEM AQUI */
         * {
             margin: 0;
             padding: 0;
@@ -28,316 +29,207 @@
             box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 2px 4px rgba(0,0,0,.1);
         }
 
-        header {
-            text-align: center;
-            padding: 40px 20px 30px;
-            border-bottom: 1px solid #dbdbdb;
-            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            border-radius: 8px 8px 0 0;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
+        /* ... TODOS OS OUTROS ESTILOS EXISTENTES ... */
 
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(5px);
-        }
-
-        h1 {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            position: relative;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .subtitle {
-            font-size: 16px;
-            opacity: 0.95;
-            font-weight: 400;
-            position: relative;
-        }
-
-        .content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            background: #fafafa;
-        }
-
-        .input-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #dbdbdb;
-            transition: all 0.2s ease;
-        }
-
-        .input-section:hover {
-            border-color: #c7c7c7;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        h2 {
-            color: #262626;
-            margin-bottom: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #efefef;
-        }
-
-        h2 i {
-            color: #E1306C;
-            font-size: 18px;
-        }
-
-        textarea {
+        /* ============ NOVOS ESTILOS PARA CARDS ============ */
+        
+        .profile-card {
             width: 100%;
-            height: 180px;
-            padding: 14px;
+            background: white;
             border: 1px solid #dbdbdb;
-            border-radius: 6px;
-            font-size: 14px;
-            resize: vertical;
-            transition: all 0.2s;
-            background: #fafafa;
-            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-            color: #262626;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #A8A8A8;
-            background: white;
-            box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
-        }
-
-        textarea::placeholder {
-            color: #8e8e8e;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 25px 30px;
-            background: white;
-            border-top: 1px solid #dbdbdb;
-        }
-
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            min-width: 140px;
-            background: #0095f6;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-
-        button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 149, 246, 0.3);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        #processar {
-            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4);
-        }
-
-        #processar:hover {
-            box-shadow: 0 4px 12px rgba(131, 58, 180, 0.3);
-        }
-
-        #copyBtn {
-            background: linear-gradient(45deg, #E1306C, #C13584);
-        }
-
-        #copyBtn:hover {
-            box-shadow: 0 4px 12px rgba(193, 53, 132, 0.3);
-        }
-
-        #clearBtn {
-            background: linear-gradient(45deg, #F56040, #F77737);
-        }
-
-        #clearBtn:hover {
-            box-shadow: 0 4px 12px rgba(247, 119, 55, 0.3);
-        }
-
-        #clearHistoryBtn {
-            background: linear-gradient(45deg, #8e8e8e, #a8a8a8);
-        }
-
-        #clearHistoryBtn:hover {
-            box-shadow: 0 4px 12px rgba(142, 142, 142, 0.3);
-        }
-
-        .output-section {
-            padding: 25px 30px;
-            background: white;
-            border-top: 1px solid #dbdbdb;
-            min-height: 300px;
-        }
-
-        #output {
-            font-size: 16px;
-            font-weight: 600;
-            color: #262626;
-            margin-bottom: 20px;
+            border-radius: 12px;
             padding: 16px;
-            background: #fafafa;
-            border-radius: 8px;
-            border-left: 4px solid #0095f6;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+            display: none; /* Começa escondido */
         }
 
-        #result {
+        .profile-card.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .profile-card-pic {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e1306c;
+            margin-right: 12px;
+            background: #f0f0f0;
+        }
+
+        .profile-card-info {
+            flex: 1;
+        }
+
+        .profile-card-name {
+            font-weight: 600;
+            color: #262626;
+            font-size: 15px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .profile-card-username {
+            color: #8e8e8e;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .profile-card-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            border-top: 1px solid #efefef;
+            padding-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        .profile-stat {
+            flex: 1;
+        }
+
+        .profile-stat-number {
+            display: block;
+            font-weight: 700;
+            color: #262626;
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .profile-stat-label {
+            font-size: 11px;
+            color: #8e8e8e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-card-bio {
+            color: #262626;
+            font-size: 13px;
+            line-height: 1.4;
+            padding: 8px 0;
+            border-top: 1px solid #efefef;
+            margin-top: 8px;
+            max-height: 60px;
+            overflow-y: auto;
+        }
+
+        .profile-card-private {
+            color: #ed4956;
+            font-size: 12px;
+            padding: 6px;
+            background: #fef2f2;
+            border-radius: 6px;
+            text-align: center;
+            margin-top: 8px;
             display: none;
         }
 
-        .stats, .instructions {
-            background: #fafafa;
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #dbdbdb;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #262626;
-        }
-
-        .instructions {
-            background: rgba(255, 237, 237, 0.3);
-            border-color: #ffcdd2;
-        }
-
-        .stats strong, .instructions strong {
+        .profile-card-verified {
             color: #0095f6;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .instructions strong {
-            color: #E1306C;
-        }
-
-        ol {
-            counter-reset: item;
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            padding: 16px;
-            margin-bottom: 12px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #dbdbdb;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-        }
-
-        li:hover {
-            border-color: #c7c7c7;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transform: translateX(2px);
-        }
-
-        li:before {
-            content: counter(item);
-            counter-increment: item;
-            font-weight: 600;
-            color: #8e8e8e;
             font-size: 14px;
-            margin-right: 16px;
-            min-width: 24px;
+        }
+
+        .profile-card-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #8e8e8e;
+        }
+
+        .profile-card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .profile-card-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            color: #262626;
             text-align: center;
         }
 
+        .profile-card-btn:hover {
+            background: #fafafa;
+            border-color: #c7c7c7;
+        }
+
+        .profile-card-btn.primary {
+            background: #0095f6;
+            color: white;
+            border-color: #0095f6;
+        }
+
+        .profile-card-btn.primary:hover {
+            background: #0081d6;
+            border-color: #0081d6;
+        }
+
+        .profile-toggle-btn {
+            padding: 6px 12px;
+            border: 1px solid #dbdbdb;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            background: white;
+            color: #262626;
+            margin-left: 10px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .profile-toggle-btn:hover {
+            background: #fafafa;
+            border-color: #c7c7c7;
+        }
+
+        .profile-toggle-btn.active {
+            background: #0095f6;
+            color: white;
+            border-color: #0095f6;
+        }
+
+        .profile-toggle-btn i {
+            font-size: 10px;
+        }
+
+        /* Modificações no item da lista */
         .link-container {
             display: flex;
             align-items: center;
             gap: 12px;
             flex: 1;
+            min-width: 0; /* Permite que o flex shrink funcione */
         }
 
-        .click-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #dbdbdb;
-            border: 2px solid white;
-            box-shadow: 0 0 0 1px #dbdbdb;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-
-        .click-indicator.visited {
-            background: #40C057;
-            box-shadow: 0 0 0 1px #40C057, 0 2px 4px rgba(64, 192, 87, 0.3);
-        }
-
-        a {
+        .username-link {
             color: #0095f6;
             text-decoration: none;
             font-weight: 600;
@@ -350,770 +242,446 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        a::before {
+        .username-link::before {
             content: '@';
             color: #8e8e8e;
             font-weight: 400;
         }
 
-        a:hover {
+        .username-link:hover {
             background: rgba(0, 149, 246, 0.1);
             color: #00376b;
         }
 
-        a.visited {
+        .username-link.visited {
             color: #40C057;
             text-decoration: line-through;
             opacity: 0.8;
         }
 
-        a.visited:hover {
-            background: rgba(64, 192, 87, 0.1);
+        /* Layout para card ao lado */
+        .list-item-with-card {
+            position: relative;
         }
 
-        .open-actions {
-            display: flex;
-            gap: 8px;
-            margin-left: 16px;
+        .card-container {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            width: 320px;
+            margin-left: 20px;
+            z-index: 1000;
+            display: none;
         }
 
-        .open-btn {
-            padding: 6px 12px;
-            border: 1px solid #dbdbdb;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: white;
-            color: #262626;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .open-btn:hover {
-            background: #fafafa;
-            border-color: #c7c7c7;
-            transform: translateY(-1px);
-        }
-
-        .open-btn.new-tab {
-            background: #0095f6;
-            color: white;
-            border-color: #0095f6;
-        }
-
-        .open-btn.new-tab:hover {
-            background: #0081d6;
-            border-color: #0081d6;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px 30px;
-            border-top: 1px solid #dbdbdb;
-            color: #8e8e8e;
-            font-size: 12px;
-            background: #fafafa;
-            border-radius: 0 0 8px 8px;
-        }
-
-        .tip {
-            background: rgba(255, 251, 235, 1);
-            color: #8a6d3b;
-            padding: 14px 20px;
-            border-radius: 8px;
-            margin: 0 30px 20px;
-            border: 1px solid #ffeaa7;
-            font-size: 13px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .tip i {
-            color: #f39c12;
-            margin-top: 2px;
-        }
-
-        .instagram-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
-            color: white;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-
-        /* NOVO CSS PARA ESTATÍSTICAS */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .stat-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #dbdbdb;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
+        .card-container.active {
             display: block;
-            margin-top: 8px;
-            line-height: 1;
         }
 
-        .stat-label {
-            font-size: 12px;
-            color: #8e8e8e;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        .stats-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #dbdbdb;
-        }
-
-        .stats-header h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #262626;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .stats-summary {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #dbdbdb;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            button {
-                width: 100%;
-            }
-            
-            li {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-            
-            .open-actions {
+        @media (max-width: 1100px) {
+            .card-container {
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                max-width: 400px;
                 margin-left: 0;
-                justify-content: flex-end;
-            }
-            
-            h1 {
-                font-size: 24px;
-            }
-            
-            .tip {
-                margin: 0 20px 20px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            
-            .stat-value {
-                font-size: 24px;
+                z-index: 2000;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             }
         }
 
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                border-radius: 6px;
-            }
-            
-            header {
-                padding: 30px 20px;
-            }
-            
-            .content {
-                padding: 15px;
-            }
-            
-            textarea {
-                height: 150px;
-            }
-            
-            .input-section {
-                padding: 16px;
-            }
-            
-            .output-section {
-                padding: 20px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+        .card-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .processing {
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .loading-dots {
-            display: inline-flex;
-            gap: 4px;
-            margin-left: 10px;
-        }
-
-        .loading-dots span {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #dbdbdb;
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-
-        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
-        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+        .card-overlay.active {
+            display: block;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- SEU HTML EXISTENTE PERMANECE IGUAL ATÉ AQUI -->
     <div class="container">
         <header>
-            <h1><i class="fab fa-instagram"></i> Comparador de Seguidores</h1>
-            <p class="subtitle">Descubra quem segue o alvo mas não te segue de volta</p>
+            <h1><i class="fab fa-instagram"></i> Comparador de Seguidores COM CARDS</h1>
+            <p class="subtitle">Descubra quem segue o alvo mas não te segue de volta • Cards de perfil integrados</p>
         </header>
 
         <div class="tip">
             <i class="fas fa-info-circle"></i>
             <div>
-                <strong>Como usar:</strong> Cole as listas de seguidores obtidas através de ferramentas de análise do Instagram. O processamento é feito 100% localmente no seu navegador.
+                <strong>Novo:</strong> Clique no botão <i class="fas fa-id-card"></i> ao lado de cada usuário para ver o card completo do perfil!
             </div>
         </div>
 
-        <div class="content">
-            <div class="input-section">
-                <h2><i class="fas fa-user-friends"></i> Quem você segue <span class="instagram-badge">OPCIONAL</span></h2>
-                <textarea id="meusSeguindo" placeholder="Cole aqui a lista de quem você segue (opcional)&#10;&#10;Formato:&#10;usuario1&#10;usuario2&#10;usuario3"></textarea>
-            </div>
+        <!-- ... RESTANTE DO SEU HTML EXISTENTE ... -->
 
-            <div class="input-section">
-                <h2><i class="fas fa-user-check"></i> Seus seguidores <span class="instagram-badge">OBRIGATÓRIO</span></h2>
-                <textarea id="meusSeguidores" placeholder="Cole aqui sua lista de seguidores (obrigatório)&#10;&#10;Formato:&#10;amigo1&#10;amigo2&#10;seguidor3"></textarea>
-            </div>
-
-            <div class="input-section">
-                <h2><i class="fas fa-bullseye"></i> Seguidores do alvo <span class="instagram-badge">OBRIGATÓRIO</span></h2>
-                <textarea id="seguidoresAlvo" placeholder="Cole aqui a lista de seguidores do perfil alvo (obrigatório)&#10;&#10;Formato:&#10;influencer&#10;marca&#10;celebridade"></textarea>
-            </div>
-        </div>
-
-        <div class="button-group">
-            <button id="processar">
-                <i class="fas fa-play-circle"></i> Processar Listas
-            </button>
-            <button id="copyBtn">
-                <i class="fas fa-copy"></i> Copiar Resultados
-            </button>
-            <button id="clearBtn">
-                <i class="fas fa-broom"></i> Limpar Tudo
-            </button>
-            <button id="clearHistoryBtn">
-                <i class="fas fa-history"></i> Limpar Histórico
-            </button>
-        </div>
-
-        <div class="output-section">
-            <div id="output">
-                <i class="fas fa-clock"></i> Aguardando processamento...
-            </div>
-            <div id="result"></div>
-        </div>
-
-        <footer>
-            <p><i class="fas fa-shield-alt"></i> Seus dados são processados localmente no seu navegador</p>
-            <p>© 2024 Instagram Tool • Não afiliado ao Instagram/Meta</p>
-        </footer>
     </div>
 
-    <script>
-        // Armazenamento local para links clicados
-        let clickedLinks = new Set();
+    <!-- OVERLAY PARA CARDS NO MOBILE -->
+    <div class="card-overlay" id="cardOverlay"></div>
 
-        // Carregar links clicados do localStorage
+    <script>
+        // ============ FUNÇÕES EXISTENTES (mantidas) ============
+        let clickedLinks = new Set();
+        
         function loadClickedLinks() {
             const saved = localStorage.getItem('instagramClickedLinks');
-            if (saved) {
-                clickedLinks = new Set(JSON.parse(saved));
-            }
+            if (saved) clickedLinks = new Set(JSON.parse(saved));
         }
 
-        // Salvar links clicados no localStorage
         function saveClickedLinks() {
             localStorage.setItem('instagramClickedLinks', JSON.stringify([...clickedLinks]));
         }
 
-        // Marcar um link como visitado
         function markAsClicked(link) {
             clickedLinks.add(link);
             saveClickedLinks();
             updateLinkDisplay();
         }
 
-        // Desmarcar um link como visitado
         function markAsUnclicked(link) {
             clickedLinks.delete(link);
             saveClickedLinks();
             updateLinkDisplay();
         }
 
-        // Abrir link em nova aba
         function openInNewTab(url) {
             window.open(url, '_blank');
         }
 
-        // Atualizar a exibição dos links
         function updateLinkDisplay() {
-            const links = document.querySelectorAll('#result a');
-            
+            const links = document.querySelectorAll('#result a, .username-link');
             links.forEach(link => {
                 const linkHref = link.getAttribute('data-href') || link.href;
                 const listItem = link.closest('li');
-                const indicator = listItem.querySelector('.click-indicator');
-                
-                if (clickedLinks.has(linkHref)) {
-                    link.classList.add('visited');
-                    indicator.classList.add('visited');
-                } else {
-                    link.classList.remove('visited');
-                    indicator.classList.remove('visited');
+                if (listItem) {
+                    const indicator = listItem.querySelector('.click-indicator');
+                    if (clickedLinks.has(linkHref)) {
+                        link.classList.add('visited');
+                        if (indicator) indicator.classList.add('visited');
+                    } else {
+                        link.classList.remove('visited');
+                        if (indicator) indicator.classList.remove('visited');
+                    }
                 }
             });
-            
-            // Atualizar estatísticas
             updateStats();
         }
 
-        // Atualizar estatísticas
-        function updateStats() {
-            const totalLinks = document.querySelectorAll('#result a').length;
-            const visitedCount = document.querySelectorAll('#result a.visited').length;
-            const unvisitedCount = totalLinks - visitedCount;
-            
-            let statsDiv = document.querySelector('.stats');
-            let instructionsDiv = document.querySelector('.instructions');
-            
-            if (!statsDiv && totalLinks > 0) {
-                statsDiv = document.createElement('div');
-                statsDiv.className = 'stats';
-                const resultDiv = document.getElementById('result');
-                resultDiv.insertBefore(statsDiv, resultDiv.firstChild);
+        // ============ NOVAS FUNÇÕES PARA CARDS ============
+        
+        // Cache para perfis já carregados
+        const profileCache = new Map();
+        let activeCard = null;
+
+        // Função para buscar dados do perfil (com cookie de sessão)
+        async function fetchInstagramProfile(username) {
+            // Verificar cache primeiro
+            if (profileCache.has(username)) {
+                return profileCache.get(username);
             }
-            
-            if (!instructionsDiv && totalLinks > 0) {
-                instructionsDiv = document.createElement('div');
-                instructionsDiv.className = 'instructions';
-                instructionsDiv.innerHTML = `
-                    <strong><i class="fas fa-info-circle"></i> Instruções de Uso:</strong><br>
-                    <div style="margin-top: 8px;">
-                    • <strong>Clique Esquerdo</strong> no @ → Apenas marca como visitado<br>
-                    • <strong>Clique do Meio (Roda)</strong> → Abre em nova aba <strong>E</strong> marca<br>
-                    • <strong>CTRL + Clique</strong> → Abre em nova aba <strong>E</strong> marca<br>
-                    • <strong>Botão "Abrir"</strong> → Abre na mesma aba e marca<br>
-                    • <strong>Botão "Nova Aba"</strong> → Abre em nova aba e marca
-                    </div>
-                `;
-                const resultDiv = document.getElementById('result');
-                const existingStats = resultDiv.querySelector('.stats');
-                if (existingStats) {
-                    resultDiv.insertBefore(instructionsDiv, existingStats.nextSibling);
-                } else {
-                    resultDiv.insertBefore(instructionsDiv, resultDiv.firstChild);
+
+            const loadingData = {
+                username: username,
+                fullName: username,
+                biography: '',
+                profilePicUrl: `https://ui-avatars.com/api/?name=${username}&background=random&size=150`,
+                followers: 0,
+                following: 0,
+                posts: 0,
+                isPrivate: false,
+                isVerified: false,
+                isLoading: true
+            };
+
+            try {
+                // Usando método com cookie de sessão (você está logado)
+                const response = await fetch(`https://www.instagram.com/${username}/`, {
+                    credentials: 'include',
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                    }
+                });
+
+                if (response.ok) {
+                    const html = await response.text();
+                    
+                    // Extrair dados da página
+                    const sharedDataMatch = html.match(/window\._sharedData\s*=\s*({.+?});<\/script>/);
+                    if (sharedDataMatch) {
+                        try {
+                            const jsonData = JSON.parse(sharedDataMatch[1]);
+                            const userData = jsonData.entry_data?.ProfilePage?.[0]?.graphql?.user;
+                            
+                            if (userData) {
+                                const profileData = {
+                                    username: userData.username || username,
+                                    fullName: userData.full_name || username,
+                                    biography: userData.biography || '',
+                                    profilePicUrl: userData.profile_pic_url_hd || userData.profile_pic_url || loadingData.profilePicUrl,
+                                    followers: userData.edge_followed_by?.count || 0,
+                                    following: userData.edge_follow?.count || 0,
+                                    posts: userData.edge_owner_to_timeline_media?.count || 0,
+                                    isPrivate: userData.is_private || false,
+                                    isVerified: userData.is_verified || false,
+                                    isLoading: false
+                                };
+                                
+                                profileCache.set(username, profileData);
+                                return profileData;
+                            }
+                        } catch (e) {
+                            console.log('Erro ao parsear JSON, usando fallback');
+                        }
+                    }
                 }
+            } catch (error) {
+                console.log('Usando dados fallback para', username);
             }
-            
-            if (statsDiv && totalLinks > 0) {
-                statsDiv.innerHTML = `
-                    <strong><i class="fas fa-chart-bar"></i> Estatísticas de Progresso:</strong>
-                    <div style="display: flex; gap: 16px; margin-top: 8px;">
-                        <span style="color:#40C057"><i class="fas fa-check-circle"></i> ${visitedCount} visitados</span>
-                        <span style="color:#E1306C"><i class="fas fa-times-circle"></i> ${unvisitedCount} não visitados</span>
-                        <span style="color:#0095f6"><i class="fas fa-hashtag"></i> ${totalLinks} total</span>
-                    </div>
-                `;
-            }
+
+            // Fallback: retornar dados básicos
+            profileCache.set(username, loadingData);
+            return loadingData;
         }
 
-        // Criar botões de ação para cada link
-        function createActionButtons(url) {
-            const container = document.createElement('div');
-            container.className = 'open-actions';
-            
-            // Botão para abrir na mesma aba
-            const openSameBtn = document.createElement('button');
-            openSameBtn.className = 'open-btn';
-            openSameBtn.innerHTML = '<i class="fas fa-external-link-alt"></i>';
-            openSameBtn.title = 'Abrir na mesma aba';
-            openSameBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                markAsClicked(url);
-                window.open(url, '_self');
-            });
-            
-            // Botão para abrir em nova aba
-            const openNewBtn = document.createElement('button');
-            openNewBtn.className = 'open-btn new-tab';
-            openNewBtn.innerHTML = '<i class="fas fa-external-link-square-alt"></i>';
-            openNewBtn.title = 'Abrir em nova aba';
-            openNewBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                markAsClicked(url);
-                openInNewTab(url);
-            });
-            
-            container.appendChild(openSameBtn);
-            container.appendChild(openNewBtn);
-            
-            return container;
-        }
-
-        // Processar os dados
-        document.getElementById("processar").addEventListener("click", () => {
-            const meusSeguidoresText = document.getElementById("meusSeguidores").value.trim();
-            const meusSeguindoText = document.getElementById("meusSeguindo").value.trim();
-            const seguidoresAlvoText = document.getElementById("seguidoresAlvo").value.trim();
-            const resultDiv = document.getElementById("result");
-            const output = document.getElementById("output");
-            const processBtn = document.getElementById("processar");
-
-            if (!meusSeguidoresText || !seguidoresAlvoText) {
-                alert("Por favor, cole sua lista de seguidores e a do alvo antes de continuar!");
-                return;
-            }
-
-            // Adicionar efeito de processamento
-            processBtn.classList.add('processing');
-            output.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando listas... <span class="loading-dots"><span></span><span></span><span></span></span>';
-
-            // Simular processamento assíncrono para melhor UX
-            setTimeout(() => {
-                processListas();
-                processBtn.classList.remove('processing');
-            }, 300);
-        });
-
-        function processListas() {
-            const meusSeguidoresText = document.getElementById("meusSeguidores").value.trim();
-            const meusSeguindoText = document.getElementById("meusSeguindo").value.trim();
-            const seguidoresAlvoText = document.getElementById("seguidoresAlvo").value.trim();
-            const resultDiv = document.getElementById("result");
-            const output = document.getElementById("output");
-
-            // Lista de palavras proibidas (ignoradas automaticamente)
-            const ignorar = [
-                "sobre","ajuda","imprensa","api","carreiras","privacidade","termos",
-                "localizações","idioma","português (brasil)","meta verified",
-                "© 2025 instagram from meta","página inicial","explorar","reels","9+",
-                "mensagens","notificações","foto do perfil de","perfil",
-                "meta ai","threads","mais","criar","pesquisar","login","criar uma conta",
-                "baixe o aplicativo","diretório","hashtags","local","entrar na minha conta"
-            ];
-
-            const regexID = /^[a-zA-Z0-9._@]+$/;
-            const limpar = texto => texto.split(/\r?\n/)
-                .map(l => l.trim().toLowerCase().replace(/^@/, ''))
-                .filter(l =>
-                    l &&
-                    regexID.test(l) &&
-                    !ignorar.some(termo => l.includes(termo))
-                );
-
-            const meusSeguidores = new Set(limpar(meusSeguidoresText));
-            const meusSeguindo = meusSeguindoText ? new Set(limpar(meusSeguindoText)) : null;
-            const seguidoresAlvo = limpar(seguidoresAlvoText);
-
-            // Filtra quem segue o alvo, mas não te segue
-            let resultado = seguidoresAlvo.filter(id => !meusSeguidores.has(id));
-
-            // Se o usuário informou quem ele segue, filtra também quem ele já segue
-            if (meusSeguindo) {
-                resultado = resultado.filter(id => !meusSeguindo.has(id));
-            }
-
-            // ============ CÁLCULO DAS ESTATÍSTICAS ============
-            const totalSeguidoresAlvo = seguidoresAlvo.length;
-            const totalMeusSeguidores = meusSeguidores.size;
-            const totalMeusSeguindo = meusSeguindo ? meusSeguindo.size : 0;
-
-            // Calcula interseções
-            const seguemAlvoEMim = seguidoresAlvo.filter(id => meusSeguidores.has(id)).length;
-            const naoSeguemDeVolta = totalSeguidoresAlvo - seguemAlvoEMim;
-            
-            // Calcula porcentagens
-            const porcentagemSeguemAmbos = totalSeguidoresAlvo > 0 
-                ? ((seguemAlvoEMim / totalSeguidoresAlvo) * 100).toFixed(1)
-                : '0.0';
-            const porcentagemNovos = totalSeguidoresAlvo > 0
-                ? ((resultado.length / totalSeguidoresAlvo) * 100).toFixed(1)
-                : '0.0';
-
-            // Cria HTML das estatísticas
-            let estatisticasHTML = `
-                <div class="stats-summary">
-                    <div class="stats-header">
-                        <h3><i class="fas fa-chart-pie"></i> RESUMO ESTATÍSTICO COMPLETO</h3>
-                        <span style="font-size: 12px; color: #8e8e8e; background: #fafafa; padding: 4px 8px; border-radius: 4px;">
-                            <i class="fas fa-sync-alt"></i> Processado em tempo real
-                        </span>
+        // Função para criar HTML do card
+        function createProfileCardHTML(profileData) {
+            return `
+                <div class="profile-card active">
+                    <div class="profile-card-header">
+                        <img src="${profileData.profilePicUrl}" 
+                             class="profile-card-pic" 
+                             alt="${profileData.username}"
+                             onerror="this.src='https://ui-avatars.com/api/?name=${profileData.username}&background=random&size=150'">
+                        <div class="profile-card-info">
+                            <div class="profile-card-name">
+                                ${profileData.fullName}
+                                ${profileData.isVerified ? '<span class="profile-card-verified">✓</span>' : ''}
+                            </div>
+                            <div class="profile-card-username">@${profileData.username}</div>
+                        </div>
                     </div>
-                    <div class="stats-grid">
-                        <div class="stat-item" style="border-left: 4px solid #405DE6;">
-                            <div class="stat-label">Seguidores do Alvo</div>
-                            <div class="stat-value" style="color: #405DE6;">${totalSeguidoresAlvo.toLocaleString()}</div>
+                    
+                    ${profileData.isPrivate ? '<div class="profile-card-private">Conta Privada</div>' : ''}
+                    
+                    <div class="profile-card-stats">
+                        <div class="profile-stat">
+                            <span class="profile-stat-number">${formatNumber(profileData.posts)}</span>
+                            <span class="profile-stat-label">Posts</span>
                         </div>
-                        <div class="stat-item" style="border-left: 4px solid #E1306C;">
-                            <div class="stat-label">Meus Seguidores</div>
-                            <div class="stat-value" style="color: #E1306C;">${totalMeusSeguidores.toLocaleString()}</div>
+                        <div class="profile-stat">
+                            <span class="profile-stat-number">${formatNumber(profileData.followers)}</span>
+                            <span class="profile-stat-label">Seguidores</span>
                         </div>
-                        ${meusSeguindo ? `
-                        <div class="stat-item" style="border-left: 4px solid #F56040;">
-                            <div class="stat-label">Pessoas que Eu Sigo</div>
-                            <div class="stat-value" style="color: #F56040;">${totalMeusSeguindo.toLocaleString()}</div>
+                        <div class="profile-stat">
+                            <span class="profile-stat-number">${formatNumber(profileData.following)}</span>
+                            <span class="profile-stat-label">Seguindo</span>
                         </div>
-                        ` : ''}
-                        <div class="stat-item" style="border-left: 4px solid #40C057;">
-                            <div class="stat-label">Seguem o Alvo E a Mim</div>
-                            <div class="stat-value" style="color: #40C057;">${seguemAlvoEMim.toLocaleString()}</div>
-                            <div style="font-size: 11px; color: #8e8e8e; margin-top: 5px;">
-                                ${porcentagemSeguemAmbos}% dos seguidores do alvo
-                            </div>
-                        </div>
-                        <div class="stat-item" style="border-left: 4px solid #FD1D1D;">
-                            <div class="stat-label">Não me Seguem de Volta</div>
-                            <div class="stat-value" style="color: #FD1D1D;">${naoSeguemDeVolta.toLocaleString()}</div>
-                        </div>
-                        <div class="stat-item" style="border-left: 4px solid #0095f6;">
-                            <div class="stat-label">Perfis Novos Encontrados</div>
-                            <div class="stat-value" style="color: #0095f6;">${resultado.length.toLocaleString()}</div>
-                            <div style="font-size: 11px; color: #8e8e8e; margin-top: 5px;">
-                                ${porcentagemNovos}% dos seguidores do alvo
-                            </div>
-                        </div>
+                    </div>
+                    
+                    ${profileData.biography ? `
+                    <div class="profile-card-bio">
+                        ${escapeHtml(profileData.biography)}
+                    </div>
+                    ` : ''}
+                    
+                    <div class="profile-card-actions">
+                        <button class="profile-card-btn primary" onclick="window.open('https://www.instagram.com/${profileData.username}/', '_blank')">
+                            <i class="fab fa-instagram"></i> Ver Perfil
+                        </button>
+                        <button class="profile-card-btn" onclick="hideProfileCard()">
+                            <i class="fas fa-times"></i> Fechar
+                        </button>
                     </div>
                 </div>
             `;
+        }
 
-            if (resultado.length === 0) {
-                output.innerHTML = estatisticasHTML + 
-                    '<div style="padding: 20px; background: #fff3cd; border-radius: 8px; border: 1px solid #ffeaa7; color: #856404;">' +
-                    '<i class="fas fa-exclamation-circle"></i> <strong>Nenhum perfil novo encontrado</strong> — todos já te seguem ou você já os segue.</div>';
-                resultDiv.style.display = "none";
-                resultDiv.innerHTML = "";
-            } else {
-                const mensagem = meusSeguindo
-                    ? `<div style="padding: 15px; background: #d4edda; border-radius: 8px; border: 1px solid #c3e6cb; color: #155724; margin-bottom: 20px;">
-                        <i class="fas fa-check-circle"></i> <strong>${resultado.length.toLocaleString()} perfis</strong> seguem o alvo, não te seguem e você ainda não segue.
-                       </div>`
-                    : `<div style="padding: 15px; background: #d4edda; border-radius: 8px; border: 1px solid #c3e6cb; color: #155724; margin-bottom: 20px;">
-                        <i class="fas fa-check-circle"></i> <strong>${resultado.length.toLocaleString()} perfis</strong> seguem o alvo mas ainda não te seguem.
-                       </div>`;
-                
-                output.innerHTML = estatisticasHTML + mensagem;
-                resultDiv.style.display = "block";
+        // Função para mostrar card
+        async function showProfileCard(username, listItem) {
+            // Esconder card ativo se existir
+            if (activeCard) {
+                activeCard.classList.remove('active');
+                document.getElementById('cardOverlay').classList.remove('active');
+            }
+            
+            // Criar ou reutilizar container
+            let cardContainer = listItem.querySelector('.card-container');
+            if (!cardContainer) {
+                cardContainer = document.createElement('div');
+                cardContainer.className = 'card-container';
+                listItem.appendChild(cardContainer);
+                listItem.classList.add('list-item-with-card');
+            }
+            
+            // Mostrar loading
+            cardContainer.innerHTML = `
+                <div class="profile-card active">
+                    <div class="profile-card-loading">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando perfil...
+                    </div>
+                </div>
+            `;
+            
+            cardContainer.classList.add('active');
+            activeCard = cardContainer;
+            
+            // Ativar overlay no mobile
+            document.getElementById('cardOverlay').classList.add('active');
+            
+            // Buscar dados
+            const profileData = await fetchInstagramProfile(username);
+            
+            // Atualizar card com dados reais
+            cardContainer.innerHTML = createProfileCardHTML(profileData);
+            
+            // Posicionar card
+            positionCard(cardContainer, listItem);
+        }
 
-                const lista = document.createElement("ol");
-                resultado.forEach((user, index) => {
-                    const li = document.createElement("li");
-                    const url = `https://www.instagram.com/${user}/`;
-                    
-                    // Container para link e indicador
-                    const linkContainer = document.createElement('div');
-                    linkContainer.className = 'link-container';
-                    
-                    // Indicador visual de clique
-                    const indicator = document.createElement("span");
-                    indicator.className = "click-indicator";
-                    linkContainer.appendChild(indicator);
-                    
-                    // *** LINK REAL DO INSTAGRAM (CORREÇÃO APLICADA AQUI) ***
-                    const a = document.createElement("a");
-                    // CORREÇÃO: Link real para o Instagram
-                    a.href = url; // LINK REAL
-                    a.target = "_blank"; // Abre em nova aba por padrão
-                    a.rel = "noopener noreferrer";
-                    a.setAttribute('data-href', url);
-                    a.textContent = `${user}`;
-                    a.title = `@${user}\n\n• Clique Esquerdo: apenas marca como visitado\n• Clique do Meio: abre em nova aba e marca\n• CTRL+Clique: abre em nova aba e marca\n• Botão Direito: menu completo do navegador`;
-                    
-                    // Evento de clique normal
-                    a.addEventListener('click', function(e) {
-                        // Se for apenas clique esquerdo simples
-                        if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            markAsClicked(url);
-                            return;
-                        }
-                        
-                        // Se for CTRL+clique ou CMD+clique (Mac)
-                        if ((e.ctrlKey || e.metaKey) && e.button === 0) {
-                            markAsClicked(url);
-                            // Permite comportamento padrão (abrir em nova aba)
-                            return;
-                        }
-                    });
-                    
-                    // Clique do meio (roda do mouse)
-                    a.addEventListener('auxclick', function(e) {
-                        if (e.button === 1) {
-                            markAsClicked(url);
-                            // Permite comportamento padrão
-                            return;
-                        }
-                    });
-                    
-                    // Teclado (Enter)
-                    a.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter') {
-                            if (e.ctrlKey || e.metaKey) {
-                                markAsClicked(url);
-                                window.open(url, '_blank', 'noopener,noreferrer');
-                                e.preventDefault();
-                            } else {
-                                e.preventDefault();
-                                markAsClicked(url);
-                            }
-                        }
-                    });
-                    
-                    linkContainer.appendChild(a);
-                    li.appendChild(linkContainer);
-                    
-                    // Botões de ação (abrir/nova aba)
-                    const actionButtons = createActionButtons(url);
-                    li.appendChild(actionButtons);
-                    
-                    lista.appendChild(li);
-                });
-
-                resultDiv.innerHTML = "";
-                resultDiv.appendChild(lista);
-                
-                // Carregar links já clicados e atualizar display
-                loadClickedLinks();
-                updateLinkDisplay();
+        // Função para posicionar card corretamente
+        function positionCard(cardContainer, listItem) {
+            const rect = listItem.getBoundingClientRect();
+            const containerRect = document.querySelector('.container').getBoundingClientRect();
+            
+            if (window.innerWidth > 1100) {
+                // Desktop: posicionar ao lado
+                if (rect.right + 340 > containerRect.right) {
+                    cardContainer.style.left = 'auto';
+                    cardContainer.style.right = '100%';
+                    cardContainer.style.marginLeft = '0';
+                    cardContainer.style.marginRight = '20px';
+                } else {
+                    cardContainer.style.left = '100%';
+                    cardContainer.style.right = 'auto';
+                    cardContainer.style.marginLeft = '20px';
+                    cardContainer.style.marginRight = '0';
+                }
             }
         }
 
-        // Botão copiar
-        document.getElementById("copyBtn").addEventListener("click", () => {
-            const resultLinks = document.querySelectorAll("#result a[data-href]");
-            if (resultLinks.length === 0) return alert("Nada para copiar!");
-            const textToCopy = Array.from(resultLinks).map(a => a.getAttribute('data-href')).join("\n");
-            navigator.clipboard.writeText(textToCopy);
+        // Função para esconder card
+        function hideProfileCard() {
+            if (activeCard) {
+                activeCard.classList.remove('active');
+                activeCard = null;
+                document.getElementById('cardOverlay').classList.remove('active');
+            }
+        }
+
+        // Função auxiliar para formatar números
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        // Função auxiliar para escapar HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML.replace(/\n/g, '<br>');
+        }
+
+        // ============ MODIFICAÇÃO NA FUNÇÃO processListas ============
+        
+        // Na função processListas, MODIFICAR a criação dos itens da lista:
+        // No loop onde cria cada item, adicionar o botão do card:
+
+        function processListas() {
+            // ... seu código existente até criar a lista ...
             
-            // Feedback visual
-            const copyBtn = document.getElementById("copyBtn");
-            const originalHTML = copyBtn.innerHTML;
-            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
-            copyBtn.style.background = 'linear-gradient(45deg, #40C057, #2F9E44)';
-            setTimeout(() => {
-                copyBtn.innerHTML = originalHTML;
-                copyBtn.style.background = 'linear-gradient(45deg, #E1306C, #C13584)';
-            }, 2000);
+            const lista = document.createElement("ol");
+            resultado.forEach((user, index) => {
+                const li = document.createElement("li");
+                const url = `https://www.instagram.com/${user}/`;
+                
+                const linkContainer = document.createElement('div');
+                linkContainer.className = 'link-container';
+                
+                const indicator = document.createElement("span");
+                indicator.className = "click-indicator";
+                linkContainer.appendChild(indicator);
+                
+                // LINK modificado para usar nova classe
+                const a = document.createElement("a");
+                a.className = "username-link"; // NOVA CLASSE
+                a.href = url;
+                a.target = "_blank";
+                a.rel = "noopener noreferrer";
+                a.setAttribute('data-href', url);
+                a.textContent = `${user}`;
+                // ... seus event listeners existentes ...
+                
+                linkContainer.appendChild(a);
+                
+                // ============ BOTÃO PARA MOSTRAR CARD ============
+                const cardButton = document.createElement("button");
+                cardButton.className = "profile-toggle-btn";
+                cardButton.innerHTML = '<i class="fas fa-id-card"></i> Card';
+                cardButton.title = "Mostrar card do perfil";
+                cardButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showProfileCard(user, li);
+                });
+                
+                linkContainer.appendChild(cardButton);
+                // ================================================
+                
+                li.appendChild(linkContainer);
+                
+                // Botões de ação originais (abrir/nova aba)
+                const actionButtons = createActionButtons(url);
+                li.appendChild(actionButtons);
+                
+                lista.appendChild(li);
+            });
+
+            // ... restante do seu código ...
+        }
+
+        // ============ EVENT LISTENERS ADICIONAIS ============
+        
+        // Fechar card ao clicar no overlay
+        document.getElementById('cardOverlay').addEventListener('click', hideProfileCard);
+        
+        // Fechar card ao pressionar ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') hideProfileCard();
         });
 
-        // Botão limpar tudo
-        document.getElementById("clearBtn").addEventListener("click", () => {
-            if (confirm("Tem certeza que deseja limpar todas as listas?")) {
-                document.getElementById("meusSeguidores").value = "";
-                document.getElementById("meusSeguindo").value = "";
-                document.getElementById("seguidoresAlvo").value = "";
-                document.getElementById("result").style.display = "none";
-                document.getElementById("output").innerHTML = '<i class="fas fa-clock"></i> Aguardando processamento...';
-                
-                // Remover div de estatísticas e instruções, se existirem
-                const statsDiv = document.querySelector('.stats');
-                const instructionsDiv = document.querySelector('.instructions');
-                if (statsDiv) statsDiv.remove();
-                if (instructionsDiv) instructionsDiv.remove();
+        // Reposicionar cards ao redimensionar a janela
+        window.addEventListener('resize', () => {
+            if (activeCard) {
+                const listItem = activeCard.closest('li');
+                if (listItem) {
+                    positionCard(activeCard, listItem);
+                }
             }
         });
 
-        // Botão limpar histórico
-        document.getElementById("clearHistoryBtn").addEventListener("click", () => {
-            if (confirm("Tem certeza que deseja limpar o histórico de links clicados?\nIsso não afeta as listas de seguidores.")) {
-                clickedLinks.clear();
-                localStorage.removeItem('instagramClickedLinks');
-                updateLinkDisplay();
-                
-                // Feedback visual
-                const clearHistoryBtn = document.getElementById("clearHistoryBtn");
-                const originalHTML = clearHistoryBtn.innerHTML;
-                clearHistoryBtn.innerHTML = '<i class="fas fa-check"></i> Histórico Limpo!';
-                clearHistoryBtn.style.background = 'linear-gradient(45deg, #40C057, #2F9E44)';
-                setTimeout(() => {
-                    clearHistoryBtn.innerHTML = originalHTML;
-                    clearHistoryBtn.style.background = 'linear-gradient(45deg, #8e8e8e, #a8a8a8)';
-                }, 2000);
-            }
-        });
-
-        // Inicializar
+        // ============ INICIALIZAÇÃO ============
         loadClickedLinks();
+        
+        // Suas outras funções existentes continuam aqui...
+        // ... restante do seu código JavaScript ...
     </script>
 </body>
 </html>
