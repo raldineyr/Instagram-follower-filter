@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram - Comparador de Seguidores</title>
     <style>
-        /* ... (mantenha todo o CSS igual) ... */
         * {
             margin: 0;
             padding: 0;
@@ -338,7 +337,7 @@
             box-shadow: 0 0 0 1px #40C057, 0 2px 4px rgba(64, 192, 87, 0.3);
         }
 
-        a.instagram-link {
+        a {
             color: #0095f6;
             text-decoration: none;
             font-weight: 600;
@@ -353,27 +352,25 @@
             cursor: pointer;
         }
 
-        a.instagram-link::before {
+        a::before {
             content: '@';
             color: #8e8e8e;
             font-weight: 400;
         }
 
-        a.instagram-link:hover {
+        a:hover {
             background: rgba(0, 149, 246, 0.1);
             color: #00376b;
-            text-decoration: underline;
         }
 
-        a.instagram-link.visited {
+        a.visited {
             color: #40C057;
             text-decoration: line-through;
             opacity: 0.8;
         }
 
-        a.instagram-link.visited:hover {
+        a.visited:hover {
             background: rgba(64, 192, 87, 0.1);
-            text-decoration: line-through underline;
         }
 
         .open-actions {
@@ -455,6 +452,71 @@
             margin-left: 10px;
         }
 
+        /* NOVO CSS PARA ESTATÍSTICAS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dbdbdb;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            display: block;
+            margin-top: 8px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #8e8e8e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .stats-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dbdbdb;
+        }
+
+        .stats-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #262626;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #dbdbdb;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
         @media (max-width: 768px) {
             .content {
                 grid-template-columns: 1fr;
@@ -487,6 +549,15 @@
             .tip {
                 margin: 0 20px 20px;
             }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -516,6 +587,10 @@
             
             .output-section {
                 padding: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -636,12 +711,24 @@
             updateLinkDisplay();
         }
 
+        // Desmarcar um link como visitado
+        function markAsUnclicked(link) {
+            clickedLinks.delete(link);
+            saveClickedLinks();
+            updateLinkDisplay();
+        }
+
+        // Abrir link em nova aba
+        function openInNewTab(url) {
+            window.open(url, '_blank');
+        }
+
         // Atualizar a exibição dos links
         function updateLinkDisplay() {
-            const links = document.querySelectorAll('#result a.instagram-link');
+            const links = document.querySelectorAll('#result a');
             
             links.forEach(link => {
-                const linkHref = link.href;
+                const linkHref = link.getAttribute('data-href') || link.href;
                 const listItem = link.closest('li');
                 const indicator = listItem.querySelector('.click-indicator');
                 
@@ -660,8 +747,8 @@
 
         // Atualizar estatísticas
         function updateStats() {
-            const totalLinks = document.querySelectorAll('#result a.instagram-link').length;
-            const visitedCount = document.querySelectorAll('#result a.instagram-link.visited').length;
+            const totalLinks = document.querySelectorAll('#result a').length;
+            const visitedCount = document.querySelectorAll('#result a.visited').length;
             const unvisitedCount = totalLinks - visitedCount;
             
             let statsDiv = document.querySelector('.stats');
@@ -680,12 +767,11 @@
                 instructionsDiv.innerHTML = `
                     <strong><i class="fas fa-info-circle"></i> Instruções de Uso:</strong><br>
                     <div style="margin-top: 8px;">
-                    • <strong>Clique Esquerdo</strong> no @ → Marca como visitado (NÃO abre o link)<br>
+                    • <strong>Clique Esquerdo</strong> no @ → Apenas marca como visitado<br>
                     • <strong>Clique do Meio (Roda)</strong> → Abre em nova aba <strong>E</strong> marca<br>
-                    • <strong>CTRL + Clique Esquerdo</strong> → Abre em nova aba <strong>E</strong> marca<br>
+                    • <strong>CTRL + Clique</strong> → Abre em nova aba <strong>E</strong> marca<br>
                     • <strong>Botão "Abrir"</strong> → Abre na mesma aba e marca<br>
-                    • <strong>Botão "Nova Aba"</strong> → Abre em nova aba e marca<br>
-                    • <strong>Botão Direito + "Abrir em nova aba"</strong> → Funciona normalmente
+                    • <strong>Botão "Nova Aba"</strong> → Abre em nova aba e marca
                     </div>
                 `;
                 const resultDiv = document.getElementById('result');
@@ -699,7 +785,7 @@
             
             if (statsDiv && totalLinks > 0) {
                 statsDiv.innerHTML = `
-                    <strong><i class="fas fa-chart-bar"></i> Estatísticas:</strong>
+                    <strong><i class="fas fa-chart-bar"></i> Estatísticas de Progresso:</strong>
                     <div style="display: flex; gap: 16px; margin-top: 8px;">
                         <span style="color:#40C057"><i class="fas fa-check-circle"></i> ${visitedCount} visitados</span>
                         <span style="color:#E1306C"><i class="fas fa-times-circle"></i> ${unvisitedCount} não visitados</span>
@@ -735,7 +821,7 @@
                 e.preventDefault();
                 e.stopPropagation();
                 markAsClicked(url);
-                window.open(url, '_blank', 'noopener,noreferrer');
+                openInNewTab(url);
             });
             
             container.appendChild(openSameBtn);
@@ -807,14 +893,85 @@
                 resultado = resultado.filter(id => !meusSeguindo.has(id));
             }
 
+            // ============ NOVO CÓDIGO: CÁLCULO DAS ESTATÍSTICAS ============
+            const totalSeguidoresAlvo = seguidoresAlvo.length;
+            const totalMeusSeguidores = meusSeguidores.size;
+            const totalMeusSeguindo = meusSeguindo ? meusSeguindo.size : 0;
+
+            // Calcula interseções
+            const seguemAlvoEMim = seguidoresAlvo.filter(id => meusSeguidores.has(id)).length;
+            const naoSeguemDeVolta = totalSeguidoresAlvo - seguemAlvoEMim;
+            
+            // Calcula porcentagens
+            const porcentagemSeguemAmbos = totalSeguidoresAlvo > 0 
+                ? ((seguemAlvoEMim / totalSeguidoresAlvo) * 100).toFixed(1)
+                : '0.0';
+            const porcentagemNovos = totalSeguidoresAlvo > 0
+                ? ((resultado.length / totalSeguidoresAlvo) * 100).toFixed(1)
+                : '0.0';
+
+            // Cria HTML das estatísticas
+            let estatisticasHTML = `
+                <div class="stats-summary">
+                    <div class="stats-header">
+                        <h3><i class="fas fa-chart-pie"></i> RESUMO ESTATÍSTICO COMPLETO</h3>
+                        <span style="font-size: 12px; color: #8e8e8e; background: #fafafa; padding: 4px 8px; border-radius: 4px;">
+                            <i class="fas fa-sync-alt"></i> Processado em tempo real
+                        </span>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item" style="border-left: 4px solid #405DE6;">
+                            <div class="stat-label">Seguidores do Alvo</div>
+                            <div class="stat-value" style="color: #405DE6;">${totalSeguidoresAlvo.toLocaleString()}</div>
+                        </div>
+                        <div class="stat-item" style="border-left: 4px solid #E1306C;">
+                            <div class="stat-label">Meus Seguidores</div>
+                            <div class="stat-value" style="color: #E1306C;">${totalMeusSeguidores.toLocaleString()}</div>
+                        </div>
+                        ${meusSeguindo ? `
+                        <div class="stat-item" style="border-left: 4px solid #F56040;">
+                            <div class="stat-label">Pessoas que Eu Sigo</div>
+                            <div class="stat-value" style="color: #F56040;">${totalMeusSeguindo.toLocaleString()}</div>
+                        </div>
+                        ` : ''}
+                        <div class="stat-item" style="border-left: 4px solid #40C057;">
+                            <div class="stat-label">Seguem o Alvo E a Mim</div>
+                            <div class="stat-value" style="color: #40C057;">${seguemAlvoEMim.toLocaleString()}</div>
+                            <div style="font-size: 11px; color: #8e8e8e; margin-top: 5px;">
+                                ${porcentagemSeguemAmbos}% dos seguidores do alvo
+                            </div>
+                        </div>
+                        <div class="stat-item" style="border-left: 4px solid #FD1D1D;">
+                            <div class="stat-label">Não me Seguem de Volta</div>
+                            <div class="stat-value" style="color: #FD1D1D;">${naoSeguemDeVolta.toLocaleString()}</div>
+                        </div>
+                        <div class="stat-item" style="border-left: 4px solid #0095f6;">
+                            <div class="stat-label">Perfis Novos Encontrados</div>
+                            <div class="stat-value" style="color: #0095f6;">${resultado.length.toLocaleString()}</div>
+                            <div style="font-size: 11px; color: #8e8e8e; margin-top: 5px;">
+                                ${porcentagemNovos}% dos seguidores do alvo
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
             if (resultado.length === 0) {
-                output.innerHTML = '<span style="color:#F56040"><i class="fas fa-exclamation-circle"></i> Nenhum perfil novo encontrado — todos já te seguem ou você já os segue.</span>';
+                output.innerHTML = estatisticasHTML + 
+                    '<div style="padding: 20px; background: #fff3cd; border-radius: 8px; border: 1px solid #ffeaa7; color: #856404;">' +
+                    '<i class="fas fa-exclamation-circle"></i> <strong>Nenhum perfil novo encontrado</strong> — todos já te seguem ou você já os segue.</div>';
                 resultDiv.style.display = "none";
+                resultDiv.innerHTML = "";
             } else {
                 const mensagem = meusSeguindo
-                    ? `<span style="color:#40C057"><i class="fas fa-check-circle"></i> ${resultado.length} perfis seguem o alvo, não te seguem e você ainda não segue.</span>`
-                    : `<span style="color:#40C057"><i class="fas fa-check-circle"></i> ${resultado.length} perfis seguem o alvo mas ainda não te seguem.</span>`;
-                output.innerHTML = mensagem;
+                    ? `<div style="padding: 15px; background: #d4edda; border-radius: 8px; border: 1px solid #c3e6cb; color: #155724; margin-bottom: 20px;">
+                        <i class="fas fa-check-circle"></i> <strong>${resultado.length.toLocaleString()} perfis</strong> seguem o alvo, não te seguem e você ainda não segue.
+                       </div>`
+                    : `<div style="padding: 15px; background: #d4edda; border-radius: 8px; border: 1px solid #c3e6cb; color: #155724; margin-bottom: 20px;">
+                        <i class="fas fa-check-circle"></i> <strong>${resultado.length.toLocaleString()} perfis</strong> seguem o alvo mas ainda não te seguem.
+                       </div>`;
+                
+                output.innerHTML = estatisticasHTML + mensagem;
                 resultDiv.style.display = "block";
 
                 const lista = document.createElement("ol");
@@ -831,73 +988,53 @@
                     indicator.className = "click-indicator";
                     linkContainer.appendChild(indicator);
                     
-                    // **SOLUÇÃO DEFINITIVA: Link REAL com href correto**
+                    // Link do Instagram (apenas para marcar, não navega)
                     const a = document.createElement("a");
-                    a.className = "instagram-link";
-                    a.href = url; // LINK REAL do Instagram!
-                    a.target = "_blank"; // Abre em nova aba por padrão
-                    a.rel = "noopener noreferrer";
-                    a.textContent = user;
-                    a.title = `@${user}\n\n• Clique Esquerdo: apenas marca como visitado\n• Clique do Meio: abre em nova aba e marca\n• CTRL+Clique: abre em nova aba e marca\n• Botão Direito: menu completo do navegador`;
+                    a.href = "#"; // Não navega - apenas placeholder
+                    a.setAttribute('data-href', url); // Guarda a URL real
+                    a.textContent = `${user}`;
+                    a.title = `@${user}\n\nClique esquerdo: apenas marca como visitado\nClique do meio ou CTRL+clique: abre em nova aba\n\nUse os botões para navegar para o perfil.`;
                     
-                    // **EVENTO CLICK - comportamento controlado**
-                    a.addEventListener('click', function(e) {
-                        // Se for apenas clique esquerdo simples (sem CTRL, Shift, etc)
-                        if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
-                            // Previne a navegação padrão
-                            e.preventDefault();
-                            e.stopPropagation();
-                            
-                            // Apenas marca como visitado, NÃO abre o link
-                            markAsClicked(url);
-                            return;
-                        }
-                        
-                        // Se for CTRL+clique ou CMD+clique (Mac)
-                        if ((e.ctrlKey || e.metaKey) && e.button === 0) {
-                            // Permite o comportamento padrão (abrir em nova aba)
-                            // E também marca como visitado
-                            markAsClicked(url);
-                            // O navegador cuida de abrir em nova aba
-                            return;
-                        }
-                        
-                        // Para outros tipos de clique (Shift+clique, etc), permite comportamento padrão
-                    });
-                    
-                    // **EVENTO AUXCLICK - para clique do meio (roda do mouse)**
-                    a.addEventListener('auxclick', function(e) {
-                        // e.button === 1 é o clique do meio
+                    // ** CORREÇÃO DO BUG: Mouseup para clique do meio **
+                    a.addEventListener('mouseup', function(e) {
+                        // e.button === 1 é o clique do meio (roda)
                         if (e.button === 1) {
-                            // Marca como visitado
+                            // Marca o link como clicado
                             markAsClicked(url);
-                            // Permite comportamento padrão (abrir em nova aba)
-                            // Não precisa de preventDefault()
+                            // Permite que o navegador abra em nova aba (comportamento padrão)
+                            // Não usamos e.preventDefault() aqui
+                        }
+                    });
+
+                    // ** CORREÇÃO DO BUG: Evento de clique corrigido **
+                    a.addEventListener('click', function(e) {
+                        // IMPORTANTE: Sempre prevenir comportamento padrão
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Clique normal (e.button === 0 e sem teclas modificadoras) - APENAS MARCA
+                        if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
+                            markAsClicked(url);
+                            // NÃO ABRE NENHUM LINK - apenas marca
+                            return;
+                        } 
+                        
+                        // CTRL+clique (e.button === 0 e com CTRL/Shift/Meta/Alt) - abre em nova aba E marca
+                        if (e.button === 0 && (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey)) {
+                            markAsClicked(url);
+                            openInNewTab(url);
                             return;
                         }
                     });
                     
-                    // **EVENTO KEYDOWN - para teclado**
+                    // Também marca com Enter
                     a.addEventListener('keydown', function(e) {
                         if (e.key === 'Enter') {
-                            // Se for Enter + CTRL/CMD
-                            if (e.ctrlKey || e.metaKey) {
-                                markAsClicked(url);
-                                // Abre em nova aba
-                                window.open(url, '_blank', 'noopener,noreferrer');
-                                e.preventDefault();
-                            }
-                            // Enter normal - apenas marca, não navega
-                            else {
-                                e.preventDefault();
-                                markAsClicked(url);
-                            }
+                            e.preventDefault();
+                            e.stopPropagation();
+                            markAsClicked(url);
                         }
                     });
-                    
-                    // **EVENTO CONTEXTMENU - botão direito**
-                    // Deixa o menu padrão do navegador funcionar normalmente
-                    // O usuário pode usar "Abrir em nova aba", "Abrir em nova janela", etc
                     
                     linkContainer.appendChild(a);
                     li.appendChild(linkContainer);
@@ -920,26 +1057,20 @@
 
         // Botão copiar
         document.getElementById("copyBtn").addEventListener("click", () => {
-            const links = document.querySelectorAll("#result a.instagram-link");
-            if (links.length === 0) return alert("Nada para copiar!");
-            const textToCopy = Array.from(links).map(a => a.href).join("\n");
+            const resultLinks = document.querySelectorAll("#result a[data-href]");
+            if (resultLinks.length === 0) return alert("Nada para copiar!");
+            const textToCopy = Array.from(resultLinks).map(a => a.getAttribute('data-href')).join("\n");
+            navigator.clipboard.writeText(textToCopy);
             
-            navigator.clipboard.writeText(textToCopy)
-                .then(() => {
-                    // Feedback visual
-                    const copyBtn = document.getElementById("copyBtn");
-                    const originalHTML = copyBtn.innerHTML;
-                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
-                    copyBtn.style.background = 'linear-gradient(45deg, #40C057, #2F9E44)';
-                    setTimeout(() => {
-                        copyBtn.innerHTML = originalHTML;
-                        copyBtn.style.background = 'linear-gradient(45deg, #E1306C, #C13584)';
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error('Erro ao copiar:', err);
-                    alert('Erro ao copiar para a área de transferência');
-                });
+            // Feedback visual
+            const copyBtn = document.getElementById("copyBtn");
+            const originalHTML = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+            copyBtn.style.background = 'linear-gradient(45deg, #40C057, #2F9E44)';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalHTML;
+                copyBtn.style.background = 'linear-gradient(45deg, #E1306C, #C13584)';
+            }, 2000);
         });
 
         // Botão limpar tudo
