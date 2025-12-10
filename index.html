@@ -893,7 +893,7 @@
                 resultado = resultado.filter(id => !meusSeguindo.has(id));
             }
 
-            // ============ NOVO CÓDIGO: CÁLCULO DAS ESTATÍSTICAS ============
+            // ============ CÁLCULO DAS ESTATÍSTICAS ============
             const totalSeguidoresAlvo = seguidoresAlvo.length;
             const totalMeusSeguidores = meusSeguidores.size;
             const totalMeusSeguindo = meusSeguindo ? meusSeguindo.size : 0;
@@ -988,51 +988,54 @@
                     indicator.className = "click-indicator";
                     linkContainer.appendChild(indicator);
                     
-                    // Link do Instagram (apenas para marcar, não navega)
+                    // *** LINK REAL DO INSTAGRAM (CORREÇÃO APLICADA AQUI) ***
                     const a = document.createElement("a");
-                    a.href = "#"; // Não navega - apenas placeholder
-                    a.setAttribute('data-href', url); // Guarda a URL real
+                    // CORREÇÃO: Link real para o Instagram
+                    a.href = url; // LINK REAL
+                    a.target = "_blank"; // Abre em nova aba por padrão
+                    a.rel = "noopener noreferrer";
+                    a.setAttribute('data-href', url);
                     a.textContent = `${user}`;
-                    a.title = `@${user}\n\nClique esquerdo: apenas marca como visitado\nClique do meio ou CTRL+clique: abre em nova aba\n\nUse os botões para navegar para o perfil.`;
+                    a.title = `@${user}\n\n• Clique Esquerdo: apenas marca como visitado\n• Clique do Meio: abre em nova aba e marca\n• CTRL+Clique: abre em nova aba e marca\n• Botão Direito: menu completo do navegador`;
                     
-                    // ** CORREÇÃO DO BUG: Mouseup para clique do meio **
-                    a.addEventListener('mouseup', function(e) {
-                        // e.button === 1 é o clique do meio (roda)
-                        if (e.button === 1) {
-                            // Marca o link como clicado
-                            markAsClicked(url);
-                            // Permite que o navegador abra em nova aba (comportamento padrão)
-                            // Não usamos e.preventDefault() aqui
-                        }
-                    });
-
-                    // ** CORREÇÃO DO BUG: Evento de clique corrigido **
+                    // Evento de clique normal
                     a.addEventListener('click', function(e) {
-                        // IMPORTANTE: Sempre prevenir comportamento padrão
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        // Clique normal (e.button === 0 e sem teclas modificadoras) - APENAS MARCA
+                        // Se for apenas clique esquerdo simples
                         if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
-                            markAsClicked(url);
-                            // NÃO ABRE NENHUM LINK - apenas marca
-                            return;
-                        } 
-                        
-                        // CTRL+clique (e.button === 0 e com CTRL/Shift/Meta/Alt) - abre em nova aba E marca
-                        if (e.button === 0 && (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey)) {
-                            markAsClicked(url);
-                            openInNewTab(url);
-                            return;
-                        }
-                    });
-                    
-                    // Também marca com Enter
-                    a.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter') {
                             e.preventDefault();
                             e.stopPropagation();
                             markAsClicked(url);
+                            return;
+                        }
+                        
+                        // Se for CTRL+clique ou CMD+clique (Mac)
+                        if ((e.ctrlKey || e.metaKey) && e.button === 0) {
+                            markAsClicked(url);
+                            // Permite comportamento padrão (abrir em nova aba)
+                            return;
+                        }
+                    });
+                    
+                    // Clique do meio (roda do mouse)
+                    a.addEventListener('auxclick', function(e) {
+                        if (e.button === 1) {
+                            markAsClicked(url);
+                            // Permite comportamento padrão
+                            return;
+                        }
+                    });
+                    
+                    // Teclado (Enter)
+                    a.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') {
+                            if (e.ctrlKey || e.metaKey) {
+                                markAsClicked(url);
+                                window.open(url, '_blank', 'noopener,noreferrer');
+                                e.preventDefault();
+                            } else {
+                                e.preventDefault();
+                                markAsClicked(url);
+                            }
                         }
                     });
                     
